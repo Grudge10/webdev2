@@ -1,0 +1,43 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <title>Recipe List</title>
+  </head>
+  <body>
+    <h1>My Recipes</h1>
+    <a href="/recipes/create">Add New Recipe</a>
+    <br /><br />
+
+    <p th:if="${recipes.isEmpty()}" style="color: gray">
+      No recipes yet. Add one!
+    </p>
+
+    <table border="1" cellpadding="8" th:if="${!recipes.isEmpty()}">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Prep Time (min)</th>
+          <th>Servings</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr th:each="recipe : ${recipes}">
+          <td th:text="${recipe.name}">Recipe Name</td>
+          <td th:text="${recipe.prepTimeMinutes}">0</td>
+          <td th:text="${recipe.servings}">0</td>
+          <td>
+            <a th:href="@{/recipes/{id}/edit(id=${recipe.id})}">Edit</a>
+            <form
+              th:action="@{/recipes/{id}/delete(id=${recipe.id})}"
+              method="post"
+              style="display: inline"
+            >
+              <button type="submit">Delete</button>
+            </form>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </body>
+</html>
