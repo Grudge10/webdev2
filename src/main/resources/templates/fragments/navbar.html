@@ -1,0 +1,25 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <body>
+    <nav
+      th:fragment="navbar"
+      style="background: #333; padding: 15px; margin-bottom: 20px"
+    >
+      <a
+        href="/products"
+        style="
+          color: white;
+          text-decoration: none;
+          margin-right: 20px;
+          font-weight: bold;
+        "
+        >Product List</a
+      >
+      <a
+        href="/products/create"
+        style="color: white; text-decoration: none; font-weight: bold"
+        >Add New Product</a
+      >
+    </nav>
+  </body>
+</html>
