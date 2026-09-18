@@ -1,0 +1,19 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <title>Task Detail</title>
+  </head>
+  <body>
+    <h1 th:text="${task.title}">Task Title</h1>
+    <p>
+      <strong>Description:</strong>
+      <span th:text="${task.description}">No description.</span>
+    </p>
+    <p>
+      <strong>Status:</strong>
+      <span th:if="${task.completed}" style="color: green">Completed</span>
+      <span th:if="${!task.completed}" style="color: red">Pending</span>
+    </p>
+    <a href="/tasks">Back to List</a>
+  </body>
+</html>

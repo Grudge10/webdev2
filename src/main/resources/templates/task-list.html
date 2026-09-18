@@ -1,0 +1,23 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <title>Task List</title>
+  </head>
+  <body>
+    <h1>My Tasks</h1>
+    <a href="/tasks/new">Add New Task</a>
+    <br /><br />
+
+    <p th:if="${tasks.isEmpty()}" style="color: gray">You have no tasks yet.</p>
+
+    <ul th:if="${!tasks.isEmpty()}">
+      <li th:each="task : ${tasks}">
+        <a th:href="@{/tasks/{id}(id=${task.id})}" th:text="${task.title}"
+          >Title</a
+        >
+        <span th:if="${task.completed}" style="color: green"> (Completed)</span>
+        <span th:if="${!task.completed}" style="color: red"> (Pending)</span>
+      </li>
+    </ul>
+  </body>
+</html>

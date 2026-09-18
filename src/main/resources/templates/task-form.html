@@ -1,0 +1,30 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <title>Add Task</title>
+  </head>
+  <body>
+    <h1>Add New Task</h1>
+
+    <form th:action="@{/tasks}" th:object="${task}" method="post">
+      <label>Title: </label>
+      <input type="text" th:field="*{title}" />
+      <span th:errors="*{title}" style="color: red"></span>
+      <br /><br />
+
+      <label>Description: </label><br />
+      <textarea th:field="*{description}" rows="4" cols="50"></textarea>
+      <br />
+      <span th:errors="*{description}" style="color: red"></span>
+      <br /><br />
+
+      <label>
+        <input type="checkbox" th:field="*{completed}" /> Completed?
+      </label>
+      <br /><br />
+
+      <button type="submit">Save Task</button>
+      <a href="/tasks">Cancel</a>
+    </form>
+  </body>
+</html>
