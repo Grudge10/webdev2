@@ -20,6 +20,11 @@ public class EntityLifecycleDemo implements CommandLineRunner {
     @Override
     @Transactional
     public void run(String... args) {
+        Long count = entityManager.createQuery("SELECT COUNT(u) FROM User u", Long.class).getSingleResult();
+        if (count > 0) {
+            return;
+        }
+
         log.info("===== JPA Entity Lifecycle Demo =====");
 
         User user = new User("jdelacruz", "juan@example.com");
