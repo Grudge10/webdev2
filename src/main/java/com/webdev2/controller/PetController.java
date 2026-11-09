@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -50,5 +51,20 @@ public class PetController {
     public ResponseEntity<Void> removePet(@PathVariable Long id) {
         petService.removePet(id);
         return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("/species")
+    public List<Pet> getPetsBySpecies(@RequestParam("name") String name) {
+        return petService.getPetsBySpecies(name);
+    }
+
+    @GetMapping("/search")
+    public List<Pet> searchPetsByName(@RequestParam("keyword") String keyword) {
+        return petService.searchPetsByName(keyword);
+    }
+
+    @GetMapping("/species-list")
+    public List<String> getAllSpecies() {
+        return petService.getAllSpecies();
     }
 }

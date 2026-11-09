@@ -63,4 +63,19 @@ public class PetService {
         }
         petRepository.deleteById(id);
     }
+
+    @Transactional(readOnly = true)
+    public List<Pet> getPetsBySpecies(String species) {
+        return petRepository.findBySpeciesIgnoreCase(species);
+    }
+
+    @Transactional(readOnly = true)
+    public List<Pet> searchPetsByName(String keyword) {
+        return petRepository.findByNameContainingIgnoreCase(keyword);
+    }
+
+    @Transactional(readOnly = true)
+    public List<String> getAllSpecies() {
+        return petRepository.findAllSpecies();
+    }
 }
