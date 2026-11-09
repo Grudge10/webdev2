@@ -78,4 +78,11 @@ public class PetService {
     public List<String> getAllSpecies() {
         return petRepository.findAllSpecies();
     }
+
+    @Transactional
+    public void batchRegister(List<Pet> pets) {
+        for (Pet p : pets) {
+            petRepository.save(p);
+        }
+    }
 }
