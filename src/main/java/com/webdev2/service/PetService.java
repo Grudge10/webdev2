@@ -3,13 +3,14 @@ package com.webdev2.service;
 import com.webdev2.dto.CreatePetRequest;
 import com.webdev2.dto.PetDTO;
 import com.webdev2.dto.UpdatePetRequest;
+import com.webdev2.exception.ResourceNotFoundException;
 import com.webdev2.model.Pet;
 import com.webdev2.repository.PetRepository;
-import org.springframework.http.HttpStatus;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
-import org.springframework.web.server.ResponseStatusException;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -30,16 +31,30 @@ public class PetService {
         );
     }
 
-    public List<PetDTO> findAll() {
-        List<PetDTO> dtos = new ArrayList<>();
-        for (Pet pet : petRepository.findAll()) {
-            dtos.add(toDTO(pet));
+    public Page<PetDTO> findAll(Optional<String> species, int page, int size, String sort, String direction) {
+        String sortField = sort;
+        String sortDir = direction;
+        if (sort != null && sort.contains(",")) {
+            String[] parts = sort.split(",");
+            sortField = parts[0].trim();
+            if (parts.length > 1) {
+                sortDir = parts[1].trim();
+            }
         }
-        return dtos;
+        Sort sorting = sortDir.equalsIgnoreCase("asc")
+                ? Sort.by(sortField).ascending()
+                : Sort.by(sortField).descending();
+        Pageable pageable = PageRequest.of(page, size, sorting);
+        if (species.isPresent() && !species.get().isBlank()) {
+            return petRepository.findBySpeciesIgnoreCase(species.get(), pageable).map(this::toDTO);
+        }
+        return petRepository.findAll(pageable).map(this::toDTO);
     }
 
-    public Optional<PetDTO> findById(Long id) {
-        return petRepository.findById(id).map(this::toDTO);
+    public PetDTO findById(Long id) {
+        Pet pet = petRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Pet not found with id: " + id));
+        return toDTO(pet);
     }
 
     public boolean existsByMicrochipNumber(String microchipNumber) {
@@ -47,14 +62,6 @@ public class PetService {
     }
 
     public PetDTO create(CreatePetRequest request) {
-        if (request.getMicrochipNumber() == null || request.getMicrochipNumber().isBlank()
-                || request.getName() == null || request.getName().isBlank()
-                || request.getSpecies() == null || request.getSpecies().isBlank()) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "microchipNumber, name, and species are required");
-        }
-        if (petRepository.existsByMicrochipNumber(request.getMicrochipNumber())) {
-            throw new ResponseStatusException(HttpStatus.CONFLICT, "Microchip number already exists");
-        }
         Pet pet = new Pet(
                 request.getMicrochipNumber(),
                 request.getName(),
@@ -65,25 +72,19 @@ public class PetService {
         return toDTO(saved);
     }
 
-    public Optional<PetDTO> update(Long id, UpdatePetRequest request) {
-        Optional<Pet> optionalPet = petRepository.findById(id);
-        if (optionalPet.isEmpty()) {
-            return Optional.empty();
-        }
-        Pet existing = optionalPet.get();
+    public PetDTO update(Long id, UpdatePetRequest request) {
+        Pet existing = petRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Pet not found with id: " + id));
         existing.setMicrochipNumber(request.getMicrochipNumber());
         existing.setName(request.getName());
         existing.setSpecies(request.getSpecies());
         existing.setBreed(request.getBreed());
-        return Optional.of(toDTO(petRepository.save(existing)));
+        return toDTO(petRepository.save(existing));
     }
 
-    public Optional<PetDTO> patch(Long id, UpdatePetRequest request) {
-        Optional<Pet> optionalPet = petRepository.findById(id);
-        if (optionalPet.isEmpty()) {
-            return Optional.empty();
-        }
-        Pet existing = optionalPet.get();
+    public PetDTO patch(Long id, UpdatePetRequest request) {
+        Pet existing = petRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Pet not found with id: " + id));
         if (request.getMicrochipNumber() != null) {
             existing.setMicrochipNumber(request.getMicrochipNumber());
         }
@@ -96,14 +97,13 @@ public class PetService {
         if (request.getBreed() != null) {
             existing.setBreed(request.getBreed());
         }
-        return Optional.of(toDTO(petRepository.save(existing)));
+        return toDTO(petRepository.save(existing));
     }
 
-    public boolean delete(Long id) {
+    public void delete(Long id) {
         if (!petRepository.existsById(id)) {
-            return false;
+            throw new ResourceNotFoundException("Pet not found with id: " + id);
         }
         petRepository.deleteById(id);
-        return true;
     }
 }
