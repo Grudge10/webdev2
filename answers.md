@@ -1,7 +1,7 @@
 # WEBDEV2 — Week 9 Lab Answers
 
-Name: Jan Liam Arias
-Student ID:
+Name: Jan Liam E. Arias
+Student ID: 2510499
 GitHub repo: https://github.com/Grudge10/webdev2
 Date submitted: 2026-11-10
 
