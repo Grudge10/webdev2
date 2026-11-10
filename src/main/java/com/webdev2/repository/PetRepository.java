@@ -6,6 +6,8 @@ import org.springframework.data.jpa.repository.Query;
 import java.util.List;
 
 public interface PetRepository extends JpaRepository<Pet, Long> {
+    boolean existsByMicrochipNumber(String microchipNumber);
+
     List<Pet> findBySpeciesIgnoreCase(String species);
 
     List<Pet> findByNameContainingIgnoreCase(String keyword);

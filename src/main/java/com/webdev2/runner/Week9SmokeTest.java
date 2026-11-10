@@ -97,7 +97,7 @@ public class Week9SmokeTest implements CommandLineRunner {
         Course sharedCourse = new Course("WEB202", "Spring Boot");
         tempStudent.addCourse(sharedCourse);
         studentRepository.save(tempStudent);
-        studentRepository.delete(tempStudent);
+        studentRepository.deleteById(tempStudent.getId());
         System.out.println("Shared course still exists after student delete: " + courseRepository.existsById(sharedCourse.getId()));
 
         Owner owner = new Owner("Maria Santos", "09181112222");
