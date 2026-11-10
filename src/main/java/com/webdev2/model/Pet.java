@@ -1,16 +1,9 @@
 package com.webdev2.model;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 
 @Entity
-@Table(name = "pet")
 public class Pet {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -18,10 +11,8 @@ public class Pet {
     @Column(unique = true, nullable = false)
     private String microchipNumber;
 
-    @Column(nullable = false)
     private String name;
 
-    @Column(nullable = false)
     private String species;
 
     private String breed;
@@ -74,14 +65,5 @@ public class Pet {
 
     public void setBreed(String breed) {
         this.breed = breed;
-    }
-
-    @Override
-    public String toString() {
-        return "Pet{id=" + id
-                + ", microchipNumber='" + microchipNumber + '\''
-                + ", name='" + name + '\''
-                + ", species='" + species + '\''
-                + ", breed='" + breed + "'}";
     }
 }

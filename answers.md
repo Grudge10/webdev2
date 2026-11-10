@@ -1,10 +1,8 @@
-# WEBDEV2 — Lab 8: Database-Backed CRUD Application (`answers.md`)
-
----
+# Lab 8: Database-Backed CRUD Application
 
 ## Task 1: Create the Repository Interface
 
-### `PetRepository` Interface Code
+### PetRepository Interface Code
 
 ```java
 package com.webdev2.repository;
@@ -16,36 +14,21 @@ public interface PetRepository extends JpaRepository<Pet, Long> {
 }
 ```
 
-### Smoke-Test Output (`findAll()` Returning Seeded Records)
+### Smoke-Test Output
 
-**Application Console Log (`PetDataSeeder`):**
+Console output from `PetDataSeeder` calling `petRepository.findAll()`:
 
 ```text
-Hibernate: 
-    select
-        p1_0.id,
-        p1_0.breed,
-        p1_0.microchip_number,
-        p1_0.name,
-        p1_0.species 
-    from
-        pet p1_0
-INFO 13171 --- [webdev2] [           main] com.webdev2.runner.PetDataSeeder : Seeded pets from findAll() (4 records): [Pet{id=1, microchipNumber='MC-1001', name='Buddy', species='Dog', breed='Golden Retriever'}, Pet{id=2, microchipNumber='MC-1002', name='Luna', species='Cat', breed='Siamese'}, Pet{id=3, microchipNumber='MC-1003', name='Max', species='Dog', breed='German Shepherd'}, Pet{id=4, microchipNumber='MC-1004', name='Milo', species='Cat', breed='Persian'}]
+Hibernate: select p1_0.id,p1_0.breed,p1_0.microchip_number,p1_0.name,p1_0.species from pet p1_0
+1 - Buddy (Dog)
+2 - Luna (Cat)
+3 - Max (Dog)
+4 - Milo (Cat)
 ```
 
-**MySQL CLI Verification (`USE webdev2_week8; DESCRIBE pet; SELECT * FROM pet;`):**
+MySQL CLI output (`SELECT * FROM pet;`):
 
 ```text
-+------------------+--------------+------+-----+---------+----------------+
-| Field            | Type         | Null | Key | Default | Extra          |
-+------------------+--------------+------+-----+---------+----------------+
-| id               | bigint       | NO   | PRI | NULL    | auto_increment |
-| breed            | varchar(255) | YES  |     | NULL    |                |
-| microchip_number | varchar(255) | NO   | UNI | NULL    |                |
-| name             | varchar(255) | NO   |     | NULL    |                |
-| species          | varchar(255) | NO   |     | NULL    |                |
-+------------------+--------------+------+-----+---------+----------------+
-
 +----+------------------+------------------+-------+---------+
 | id | breed            | microchip_number | name  | species |
 +----+------------------+------------------+-------+---------+
@@ -56,50 +39,35 @@ INFO 13171 --- [webdev2] [           main] com.webdev2.runner.PetDataSeeder : Se
 +----+------------------+------------------+-------+---------+
 ```
 
----
-
 ## Task 2: Implement Full CRUD via a Service Layer
 
-### `PetService` Code
+### PetService Code
 
 ```java
 @Service
 public class PetService {
-
     private final PetRepository petRepository;
 
     public PetService(PetRepository petRepository) {
         this.petRepository = petRepository;
     }
 
-    @Transactional
     public Pet registerPet(Pet p) {
         if (p.getMicrochipNumber() == null || p.getMicrochipNumber().isBlank()) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Microchip number is required");
         }
-        if (p.getName() == null || p.getName().isBlank()) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Pet name is required");
-        }
-        if (p.getSpecies() == null || p.getSpecies().isBlank()) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Species is required");
-        }
-        p.setId(null);
         return petRepository.save(p);
     }
 
-    @Transactional(readOnly = true)
     public List<Pet> getAllPets() {
         return petRepository.findAll();
     }
 
-    @Transactional(readOnly = true)
     public Pet getPetById(Long id) {
         return petRepository.findById(id)
-                .orElseThrow(() -> new ResponseStatusException(
-                        HttpStatus.NOT_FOUND, "Pet not found with id: " + id));
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Pet not found with id: " + id));
     }
 
-    @Transactional
     public Pet updatePet(Long id, Pet updated) {
         Pet existing = getPetById(id);
         existing.setMicrochipNumber(updated.getMicrochipNumber());
@@ -109,24 +77,21 @@ public class PetService {
         return petRepository.save(existing);
     }
 
-    @Transactional
     public void removePet(Long id) {
         if (!petRepository.existsById(id)) {
-            throw new ResponseStatusException(
-                    HttpStatus.NOT_FOUND, "Pet not found with id: " + id);
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Pet not found with id: " + id);
         }
         petRepository.deleteById(id);
     }
 }
 ```
 
-### `PetController` Code
+### PetController Code
 
 ```java
 @RestController
 @RequestMapping("/api/pets")
 public class PetController {
-
     private final PetService petService;
 
     public PetController(PetService petService) {
@@ -135,8 +100,7 @@ public class PetController {
 
     @PostMapping
     public ResponseEntity<Pet> registerPet(@RequestBody Pet pet) {
-        Pet saved = petService.registerPet(pet);
-        return ResponseEntity.status(HttpStatus.CREATED).body(saved);
+        return ResponseEntity.status(HttpStatus.CREATED).body(petService.registerPet(pet));
     }
 
     @GetMapping
@@ -162,15 +126,13 @@ public class PetController {
 }
 ```
 
-### Request / Response Samples for All Five CRUD Operations
+### Request and Response Samples
 
-#### 1. `POST /api/pets` (Create — `201 Created`)
+1. POST `/api/pets` (201 Created)
 
 Request:
 ```bash
-curl -i -X POST http://localhost:8080/api/pets \
-  -H "Content-Type: application/json" \
-  -d '{"microchipNumber":"MC-1005","name":"Bella","species":"Rabbit","breed":"Holland Lop"}'
+curl -i -X POST http://localhost:8080/api/pets -H "Content-Type: application/json" -d '{"microchipNumber":"MC-1005","name":"Bella","species":"Rabbit","breed":"Holland Lop"}'
 ```
 
 Response:
@@ -181,7 +143,7 @@ Content-Type: application/json
 {"id":5,"microchipNumber":"MC-1005","name":"Bella","species":"Rabbit","breed":"Holland Lop"}
 ```
 
-#### 2. `GET /api/pets` (Read All — `200 OK`)
+2. GET `/api/pets` (200 OK)
 
 Request:
 ```bash
@@ -193,18 +155,12 @@ Response:
 HTTP/1.1 200 
 Content-Type: application/json
 
-[
-  {"id":1,"microchipNumber":"MC-1001","name":"Buddy","species":"Dog","breed":"Golden Retriever"},
-  {"id":2,"microchipNumber":"MC-1002","name":"Luna","species":"Cat","breed":"Siamese"},
-  {"id":3,"microchipNumber":"MC-1003","name":"Max","species":"Dog","breed":"German Shepherd"},
-  {"id":4,"microchipNumber":"MC-1004","name":"Milo","species":"Cat","breed":"Persian"},
-  {"id":5,"microchipNumber":"MC-1005","name":"Bella","species":"Rabbit","breed":"Holland Lop"}
-]
+[{"id":1,"microchipNumber":"MC-1001","name":"Buddy","species":"Dog","breed":"Golden Retriever"},{"id":2,"microchipNumber":"MC-1002","name":"Luna","species":"Cat","breed":"Siamese"},{"id":3,"microchipNumber":"MC-1003","name":"Max","species":"Dog","breed":"German Shepherd"},{"id":4,"microchipNumber":"MC-1004","name":"Milo","species":"Cat","breed":"Persian"},{"id":5,"microchipNumber":"MC-1005","name":"Bella","species":"Rabbit","breed":"Holland Lop"}]
 ```
 
-#### 3. `GET /api/pets/{id}` (Read One — `200 OK` and `404 Not Found`)
+3. GET `/api/pets/5` (200 OK) and GET `/api/pets/999` (404 Not Found)
 
-Request (existing ID):
+Request:
 ```bash
 curl -i http://localhost:8080/api/pets/5
 ```
@@ -217,7 +173,7 @@ Content-Type: application/json
 {"id":5,"microchipNumber":"MC-1005","name":"Bella","species":"Rabbit","breed":"Holland Lop"}
 ```
 
-Request (missing ID):
+Request for missing ID:
 ```bash
 curl -i http://localhost:8080/api/pets/999
 ```
@@ -230,13 +186,11 @@ Content-Type: application/json
 {"timestamp":"2026-11-09T15:12:37.572Z","status":404,"error":"Not Found","path":"/api/pets/999"}
 ```
 
-#### 4. `PUT /api/pets/{id}` (Update — `200 OK`)
+4. PUT `/api/pets/5` (200 OK)
 
 Request:
 ```bash
-curl -i -X PUT http://localhost:8080/api/pets/5 \
-  -H "Content-Type: application/json" \
-  -d '{"microchipNumber":"MC-1005","name":"Bella","species":"Rabbit","breed":"Mini Lop"}'
+curl -i -X PUT http://localhost:8080/api/pets/5 -H "Content-Type: application/json" -d '{"microchipNumber":"MC-1005","name":"Bella","species":"Rabbit","breed":"Mini Lop"}'
 ```
 
 Response:
@@ -247,7 +201,7 @@ Content-Type: application/json
 {"id":5,"microchipNumber":"MC-1005","name":"Bella","species":"Rabbit","breed":"Mini Lop"}
 ```
 
-#### 5. `DELETE /api/pets/{id}` (Delete — `204 No Content`)
+5. DELETE `/api/pets/5` (204 No Content)
 
 Request:
 ```bash
@@ -259,11 +213,9 @@ Response:
 HTTP/1.1 204 
 ```
 
----
+## Task 3: Write Derived and Custom Query Methods
 
-## Task 3: Write Derived & Custom Query Methods
-
-### Updated `PetRepository` Interface
+### Updated PetRepository Interface
 
 ```java
 package com.webdev2.repository;
@@ -271,11 +223,9 @@ package com.webdev2.repository;
 import com.webdev2.model.Pet;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
-
 import java.util.List;
 
 public interface PetRepository extends JpaRepository<Pet, Long> {
-
     List<Pet> findBySpeciesIgnoreCase(String species);
 
     List<Pet> findByNameContainingIgnoreCase(String keyword);
@@ -285,9 +235,9 @@ public interface PetRepository extends JpaRepository<Pet, Long> {
 }
 ```
 
-### Sample JSON Responses for the Three Query Endpoints
+### Sample JSON Responses
 
-#### 1. `GET /api/pets/species?name=dog`
+1. `GET /api/pets/species?name=dog`
 
 ```json
 [
@@ -296,7 +246,7 @@ public interface PetRepository extends JpaRepository<Pet, Long> {
 ]
 ```
 
-#### 2. `GET /api/pets/search?keyword=lu`
+2. `GET /api/pets/search?keyword=lu`
 
 ```json
 [
@@ -304,17 +254,15 @@ public interface PetRepository extends JpaRepository<Pet, Long> {
 ]
 ```
 
-#### 3. `GET /api/pets/species-list`
+3. `GET /api/pets/species-list`
 
 ```json
 ["Dog","Cat"]
 ```
 
----
+## Task 4: Apply @Transactional and Observe Rollback
 
-## Task 4: Apply `@Transactional` and Observe Rollback
-
-### `batchRegister` Method Code
+### batchRegister Method Code
 
 ```java
 @Transactional
@@ -325,41 +273,19 @@ public void batchRegister(List<Pet> pets) {
 }
 ```
 
-### Failed Batch Request
+### SQL Log and MySQL Output
 
-```bash
-curl -i -X POST http://localhost:8080/api/pets/batch \
-  -H "Content-Type: application/json" \
-  -d '[
-    {"microchipNumber":"MC-2001","name":"Rocky","species":"Dog","breed":"Beagle"},
-    {"microchipNumber":"MC-2001","name":"Shadow","species":"Cat","breed":"Maine Coon"}
-  ]'
-```
-
-### SQL Log Output and Exception Trace
+SQL log when sending two pets with the same microchip number (`MC-2001`):
 
 ```text
-Hibernate: 
-    insert 
-    into
-        pet
-        (breed, microchip_number, name, species) 
-    values
-        (?, ?, ?, ?)
-Hibernate: 
-    insert 
-    into
-        pet
-        (breed, microchip_number, name, species) 
-    values
-        (?, ?, ?, ?)
+Hibernate: insert into pet (breed,microchip_number,name,species) values (?,?,?,?)
+Hibernate: insert into pet (breed,microchip_number,name,species) values (?,?,?,?)
 WARN  org.hibernate.orm.jdbc.error : HHH000247: ErrorCode: 1062, SQLState: 23000
 WARN  org.hibernate.orm.jdbc.error : Duplicate entry 'MC-2001' for key 'pet.UKk92of6wx70ej50626uc0vvdm7'
-ERROR o.a.c.c.C.[.[.[/].[dispatcherServlet] : Servlet.service() for servlet [dispatcherServlet] in context with path [] threw exception [Request processing failed: org.springframework.dao.DataIntegrityViolationException: could not execute statement [Duplicate entry 'MC-2001' for key 'pet.UKk92of6wx70ej50626uc0vvdm7'] [insert into pet (breed,microchip_number,name,species) values (?,?,?,?)]; SQL [insert into pet (breed,microchip_number,name,species) values (?,?,?,?)]; constraint [pet.UKk92of6wx70ej50626uc0vvdm7]] with root cause
-java.sql.SQLIntegrityConstraintViolationException: Duplicate entry 'MC-2001' for key 'pet.UKk92of6wx70ej50626uc0vvdm7'
+ERROR o.a.c.c.C.[.[.[/].[dispatcherServlet] : Servlet.service() for servlet [dispatcherServlet] in context with path [] threw exception [Request processing failed: org.springframework.dao.DataIntegrityViolationException: could not execute statement [Duplicate entry 'MC-2001' for key 'pet.UKk92of6wx70ej50626uc0vvdm7']]
 ```
 
-### MySQL CLI Output After the Failed Batch (`SELECT * FROM pet;`)
+MySQL CLI output after the failed batch (`SELECT * FROM pet;`):
 
 ```text
 +----+------------------+------------------+-------+---------+
@@ -372,57 +298,31 @@ java.sql.SQLIntegrityConstraintViolationException: Duplicate entry 'MC-2001' for
 +----+------------------+------------------+-------+---------+
 ```
 
-### Explanation of What Was Observed
+### Explanation
 
-When `batchRegister` ran, Hibernate executed the first `INSERT INTO pet` for `"Rocky"` (`MC-2001`) inside the active transaction opened by `@Transactional`. When the loop attempted the second `INSERT INTO pet` for `"Shadow"` with the duplicate `microchip_number` `"MC-2001"`, MySQL rejected the statement with error `1062 (23000): Duplicate entry 'MC-2001' for key 'pet.UKk92of6wx70ej50626uc0vvdm7'`, which Spring translated into an unchecked `DataIntegrityViolationException`. Because `batchRegister` is annotated with `@Transactional`, the unchecked exception escaping the method caused Spring's transaction interceptor to roll back the entire transaction, undoing the first `INSERT` for `"Rocky"` so zero rows from the failed batch were committed to the `pet` table.
-
----
+When running batchRegister, Hibernate logged an insert statement for inserting the first pet in the list (Rocky with MC-2001). When trying to insert the second pet (Shadow) with the same microchip number MC-2001, a duplicate entry error was thrown due to the unique constraint in MySQL. This caused a DataIntegrityViolationException to be thrown in Spring. As batchRegister is annotated with @Transactional, Spring rolled back the entire transaction due to the runtime exception being thrown. Therefore, the first pet Rocky was rolled back and not inserted into the database table.
 
 ## Task 5: Debug a Persistence Error
 
-### Defects Identified in the Broken Snippet
+### Defects Found
 
-1. **Missing `@GeneratedValue` on `@Id private Long id`:** Without `@GeneratedValue(strategy = GenerationType.IDENTITY)`, Hibernate expects the primary key to be assigned manually before `persist()` is called. Saving a new `Pet` with `id == null` fails with `org.springframework.orm.jpa.JpaSystemException: Identifier of entity 'com.webdev2.model.Pet' must be manually assigned before calling 'persist()'`.
-2. **Omitted `species` (and `breed`) field and accessors on `Pet`:** Removing `species` breaks the domain mapping for the `pet` table, causes compile errors where `getSpecies()`/`setSpecies()` are used, and causes Spring Data JPA repository validation to fail at startup (`QueryCreationException` / `UnknownPathException: Could not resolve attribute 'species' of 'com.webdev2.model.Pet'`) when validating `findBySpeciesIgnoreCase` and `SELECT DISTINCT p.species FROM Pet p`.
-3. **Null `microchipNumber` in the service call (`p.setMicrochipNumber(null)`):** The `microchipNumber` column is declared with `@Column(unique = true, nullable = false)`. Passing `null` (and leaving `name` and `species` unset) violates the `NOT NULL` column constraint in MySQL, throwing `org.springframework.dao.DataIntegrityViolationException` with root cause `java.sql.SQLIntegrityConstraintViolationException: Column 'microchip_number' cannot be null`.
+1. The @GeneratedValue annotation is missing on the id field in Pet, so JPA will not auto-generate a new primary key.
+2. The species (and breed) fields along with getters and setters are missing from Pet, causing errors in entity mapping. This causes any query methods in the repository that use species to fail on startup.
+3. In the service call, p.setMicrochipNumber(null) is setting the microchipNumber to null when it has a @Column annotation with unique = true and nullable = false.
 
 ### Three-Step Debugging Process
 
-1. **Stack Trace Analysis:**
-   - **Defect 1 (`species` omitted):** On startup, Spring Data JPA failed to create `petRepository`:
-     ```text
-     org.springframework.data.repository.query.QueryCreationException: Cannot create query for method [PetRepository.findAllSpecies()]; Query validation failed for 'SELECT DISTINCT p.species FROM Pet p'
-     Caused by: org.hibernate.query.sqm.UnknownPathException: Could not resolve attribute 'species' of 'com.webdev2.model.Pet' [SELECT DISTINCT p.species FROM Pet p]
-     ```
-   - **Defect 2 (`@GeneratedValue` missing on `@Id`):** Calling `petRepository.save(p)` with `id == null` threw:
-     ```text
-     org.springframework.orm.jpa.JpaSystemException: Identifier of entity 'com.webdev2.model.Pet' must be manually assigned before calling 'persist()'
-     Caused by: org.hibernate.id.IdentifierGenerationException: Identifier of entity 'com.webdev2.model.Pet' must be manually assigned before calling 'persist()'
-     ```
-   - **Defect 3 (`p.setMicrochipNumber(null)`):** After adding `@GeneratedValue(strategy = GenerationType.IDENTITY)`, calling `petRepository.save(p)` with `microchipNumber = null` threw:
-     ```text
-     WARN  org.hibernate.orm.jdbc.error : HHH000247: ErrorCode: 1048, SQLState: 23000
-     WARN  org.hibernate.orm.jdbc.error : Column 'microchip_number' cannot be null
-     org.springframework.dao.DataIntegrityViolationException: could not execute statement [Column 'microchip_number' cannot be null] [insert into pet (breed,microchip_number,name,species) values (?,?,?,?)]; SQL [insert into pet (breed,microchip_number,name,species) values (?,?,?,?)]; constraint [microchip_number]
-     Caused by: org.hibernate.exception.ConstraintViolationException: could not execute statement [Column 'microchip_number' cannot be null] [insert into pet (breed,microchip_number,name,species) values (?,?,?,?)]
-     Caused by: java.sql.SQLIntegrityConstraintViolationException: Column 'microchip_number' cannot be null
-     ```
-2. **SQL Log Correlation:**
-   - With `spring.jpa.show-sql=true` and `logging.level.org.hibernate.SQL=DEBUG` enabled:
-     - During the missing `@GeneratedValue` failure, **zero `insert into pet` statements appeared in the SQL log** because Hibernate aborted `persist()` before generating SQL when it saw `id == null` without an identifier generator.
-     - Once `@GeneratedValue(strategy = GenerationType.IDENTITY)` was added, the SQL log printed `insert into pet (breed, microchip_number, name, species) values (?, ?, ?, ?)` immediately followed by `HHH000247: ErrorCode: 1048, SQLState: 23000` (`Column 'microchip_number' cannot be null`), confirming the `INSERT` reached MySQL and was rejected by the `NOT NULL` constraint on `microchip_number`.
-3. **Targeted Fix:**
-   - Added `@GeneratedValue(strategy = GenerationType.IDENTITY)` on `@Id private Long id` so MySQL `AUTO_INCREMENT` assigns the primary key.
-   - Restored the `species` (`@Column(nullable = false)`) and `breed` fields, constructors, and getters/setters on `Pet`.
-   - Updated the service call to supply non-null `microchipNumber`, `name`, `species`, and `breed` before calling `petRepository.save(p)`. After applying these fixes, Hibernate executed the `INSERT` statement and committed the row without errors.
+The stack trace said: When species was removed from Pet, the application would crash on launch with QueryCreationException: Could not resolve attribute 'species' of 'com.webdev2.model.Pet' due to UnknownPathException. When species was added back in and a new Pet was saved without @GeneratedValue being included on the entity, I received a JpaSystemException: IdentifierGenerationException: The identifier of an instance of entity 'com.webdev2.model.Pet' is required to be assigned manually. When @GeneratedValue was added onto the entity and I tried to save(p) with p.setMicrochipNumber(null), I received a DataIntegrityViolationException: SQLIntegrityConstraintViolationException: Column 'microchip_number' cannot be null.
 
-### Fixed `Pet` Entity and Service Snippet
+Looking at the SQL logs showed that when @GeneratedValue wasn't included, no insert into pet statement was shown as Hibernate didn't get to that point. When @GeneratedValue was added, the SQL logs showed that Hibernate: insert into pet (breed,microchip_number,name,species) values (?,?,?,?) was about to be run but then MySQL returned code 1048 (Column 'microchip_number' cannot be null).
+
+I fixed this by adding @GeneratedValue(strategy = GenerationType.IDENTITY) to the id field under @Id. I also added the missing species and breed fields to Pet, along with the constructors, getters, and setters. Then I changed the service call to include a valid non-null microchipNumber, name, species, and breed.
+
+### Fixed Pet Entity and Service Snippet
 
 ```java
 @Entity
-@Table(name = "pet")
 public class Pet {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -430,10 +330,8 @@ public class Pet {
     @Column(unique = true, nullable = false)
     private String microchipNumber;
 
-    @Column(nullable = false)
     private String name;
 
-    @Column(nullable = false)
     private String species;
 
     private String breed;
