@@ -1,0 +1,33 @@
+HTTP/1.1 200 
+Vary: Origin
+Vary: Access-Control-Request-Method
+Vary: Access-Control-Request-Headers
+Access-Control-Allow-Origin: http://localhost:5500
+Access-Control-Allow-Methods: GET,POST,PUT,PATCH,DELETE,OPTIONS
+Access-Control-Allow-Credentials: true
+Access-Control-Max-Age: 1800
+Allow: GET, HEAD, POST, PUT, DELETE, OPTIONS, PATCH
+Content-Length: 0
+Date: Mon, 16 Nov 2026 10:45:12 GMT
+
+--- Allowed GET Origin http://localhost:5500 ---
+HTTP/1.1 200 
+Vary: Origin
+Vary: Access-Control-Request-Method
+Vary: Access-Control-Request-Headers
+Access-Control-Allow-Origin: http://localhost:5500
+Access-Control-Allow-Credentials: true
+Content-Type: application/json
+Content-Length: 576
+Date: Mon, 16 Nov 2026 10:45:12 GMT
+
+{"content":[{"breed":"Golden Retriever","id":1,"microchipNumber":"MC-1001","name":"Buddy","ownerId":1,"ownerName":"Maria Santos","species":"Dog"},{"breed":"Siamese","id":2,"microchipNumber":"MC-1002","name":"Luna","ownerId":2,"ownerName":"Carlos Mendoza","species":"Cat"}],"empty":false,"first":true,"last":false,"number":0,"numberOfElements":2,"pageable":{"offset":0,"pageNumber":0,"pageSize":2,"paged":true,"sort":{"empty":false,"sorted":true,"unsorted":false},"unpaged":false},"size":2,"sort":{"empty":false,"sorted":true,"unsorted":false},"totalElements":5,"totalPages":3}
+--- Blocked Origin http://untrusted.example ---
+HTTP/1.1 403 
+Vary: Origin
+Vary: Access-Control-Request-Method
+Vary: Access-Control-Request-Headers
+Transfer-Encoding: chunked
+Date: Mon, 16 Nov 2026 10:45:12 GMT
+
+Invalid CORS request

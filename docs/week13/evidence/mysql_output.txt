@@ -1,0 +1,10 @@
+id	microchip_number	name	species	breed	owner_id	owner_name
+1	MC-1001	Buddy	Dog	Golden Retriever	1	Maria Santos
+2	MC-1002	Luna	Cat	Siamese	2	Carlos Mendoza
+3	MC-1003	Max	Dog	German Shepherd	2	Carlos Mendoza
+4	MC-1004	Milo	Cat	Persian	3	Elena Cruz
+8	MC-9001	Bantay	Dog	Aspin	1	Maria Santos
+id	name	phone
+1	Maria Santos	09181112222
+2	Carlos Mendoza	09172223333
+3	Elena Cruz	09193334444

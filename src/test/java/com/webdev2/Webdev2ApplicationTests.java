@@ -4,6 +4,7 @@ import com.webdev2.dto.CreatePetRequest;
 import com.webdev2.dto.PetDTO;
 import com.webdev2.dto.UpdatePetRequest;
 import com.webdev2.exception.ResourceNotFoundException;
+import com.webdev2.service.OwnerService;
 import com.webdev2.service.PetService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,8 +21,13 @@ class Webdev2ApplicationTests {
 	@Autowired
 	private PetService petService;
 
+	@Autowired
+	private OwnerService ownerService;
+
 	@Test
 	void contextLoads() {
+		assertFalse(ownerService.findAll().isEmpty());
+
 		PetDTO created = petService.create(new CreatePetRequest("MC-3001", "Coco", "Dog", "Poodle"));
 		assertNotNull(created.getId());
 

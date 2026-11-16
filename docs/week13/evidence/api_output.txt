@@ -1,0 +1,41 @@
+HTTP/1.1 200 
+Vary: Origin
+Vary: Access-Control-Request-Method
+Vary: Access-Control-Request-Headers
+Content-Type: application/json
+Content-Length: 954
+Date: Mon, 16 Nov 2026 10:45:10 GMT
+
+{"content":[{"breed":"Golden Retriever","id":1,"microchipNumber":"MC-1001","name":"Buddy","ownerId":1,"ownerName":"Maria Santos","species":"Dog"},{"breed":"Siamese","id":2,"microchipNumber":"MC-1002","name":"Luna","ownerId":2,"ownerName":"Carlos Mendoza","species":"Cat"},{"breed":"German Shepherd","id":3,"microchipNumber":"MC-1003","name":"Max","ownerId":2,"ownerName":"Carlos Mendoza","species":"Dog"},{"breed":"Persian","id":4,"microchipNumber":"MC-1004","name":"Milo","ownerId":3,"ownerName":"Elena Cruz","species":"Cat"},{"breed":"Aspin","id":8,"microchipNumber":"MC-9001","name":"Bantay","ownerId":1,"ownerName":"Maria Santos","species":"Dog"}],"empty":false,"first":true,"last":true,"number":0,"numberOfElements":5,"pageable":{"offset":0,"pageNumber":0,"pageSize":5,"paged":true,"sort":{"empty":false,"sorted":true,"unsorted":false},"unpaged":false},"size":5,"sort":{"empty":false,"sorted":true,"unsorted":false},"totalElements":5,"totalPages":1}
+--- GET /api/pets/1 ---
+HTTP/1.1 200 
+Vary: Origin
+Vary: Access-Control-Request-Method
+Vary: Access-Control-Request-Headers
+Content-Type: application/json
+Transfer-Encoding: chunked
+Date: Mon, 16 Nov 2026 10:45:10 GMT
+
+{"breed":"Golden Retriever","id":1,"microchipNumber":"MC-1001","name":"Buddy","ownerId":1,"ownerName":"Maria Santos","species":"Dog"}
+--- GET /api/pets?species=Bird ---
+HTTP/1.1 200 
+Vary: Origin
+Vary: Access-Control-Request-Method
+Vary: Access-Control-Request-Headers
+Content-Type: application/json
+Content-Length: 317
+Date: Mon, 16 Nov 2026 10:45:10 GMT
+
+{"content":[],"empty":true,"first":true,"last":true,"number":0,"numberOfElements":0,"pageable":{"offset":0,"pageNumber":0,"pageSize":20,"paged":true,"sort":{"empty":false,"sorted":true,"unsorted":false},"unpaged":false},"size":20,"sort":{"empty":false,"sorted":true,"unsorted":false},"totalElements":0,"totalPages":0}
+--- GET /api/pets/999 ---
+HTTP/1.1 404 
+Vary: Origin
+Vary: Access-Control-Request-Method
+Vary: Access-Control-Request-Headers
+Content-Type: application/json
+Transfer-Encoding: chunked
+Date: Mon, 16 Nov 2026 10:45:10 GMT
+
+{"status":404,"message":"Pet not found with id: 999","timestamp":1794825910225,"errors":null}
+--- GET /api/owners ---
+[{"id":1,"name":"Maria Santos","phone":"09181112222"},{"id":2,"name":"Carlos Mendoza","phone":"09172223333"},{"id":3,"name":"Elena Cruz","phone":"09193334444"}]
