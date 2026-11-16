@@ -6,6 +6,8 @@ public class PetDTO {
     private String name;
     private String species;
     private String breed;
+    private Long ownerId;
+    private String ownerName;
 
     public PetDTO() {
     }
@@ -16,6 +18,16 @@ public class PetDTO {
         this.name = name;
         this.species = species;
         this.breed = breed;
+    }
+
+    public PetDTO(Long id, String microchipNumber, String name, String species, String breed, Long ownerId, String ownerName) {
+        this.id = id;
+        this.microchipNumber = microchipNumber;
+        this.name = name;
+        this.species = species;
+        this.breed = breed;
+        this.ownerId = ownerId;
+        this.ownerName = ownerName;
     }
 
     public Long getId() {
@@ -56,5 +68,21 @@ public class PetDTO {
 
     public void setBreed(String breed) {
         this.breed = breed;
+    }
+
+    public Long getOwnerId() {
+        return ownerId;
+    }
+
+    public void setOwnerId(Long ownerId) {
+        this.ownerId = ownerId;
+    }
+
+    public String getOwnerName() {
+        return ownerName;
+    }
+
+    public void setOwnerName(String ownerName) {
+        this.ownerName = ownerName;
     }
 }

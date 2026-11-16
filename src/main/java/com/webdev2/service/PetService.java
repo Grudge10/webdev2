@@ -11,6 +11,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import java.util.Optional;
 
 @Service
@@ -22,15 +23,20 @@ public class PetService {
     }
 
     public PetDTO toDTO(Pet pet) {
+        Long ownerId = pet.getOwner() != null ? pet.getOwner().getId() : null;
+        String ownerName = pet.getOwner() != null ? pet.getOwner().getName() : null;
         return new PetDTO(
                 pet.getId(),
                 pet.getMicrochipNumber(),
                 pet.getName(),
                 pet.getSpecies(),
-                pet.getBreed()
+                pet.getBreed(),
+                ownerId,
+                ownerName
         );
     }
 
+    @Transactional(readOnly = true)
     public Page<PetDTO> findAll(Optional<String> species, int page, int size, String sort, String direction) {
         String sortField = sort;
         String sortDir = direction;
@@ -51,6 +57,7 @@ public class PetService {
         return petRepository.findAll(pageable).map(this::toDTO);
     }
 
+    @Transactional(readOnly = true)
     public PetDTO findById(Long id) {
         Pet pet = petRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Pet not found with id: " + id));
