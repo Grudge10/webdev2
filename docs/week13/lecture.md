@@ -8,9 +8,9 @@
 
 ## 1. Baseline Audit and Scope
 
-I branched `week13` from `week11` instead of `midterm`, since `week11` holds our Vet Clinic capstone project. On `week11`, the `Pet`, `Owner`, `Veterinarian`, and `Appointment` entities and the `/api/pets` endpoints already worked with validation and pagination.
+The `week13` branch was branched off from `week11` rather than `midterm`, as `week11` contains our Vet Clinic capstone project. The `Pet`, `Owner`, `Veterinarian` and `Appointment` entities were working with the `/api/pets` endpoints including validation and pagination.
 
-For Week 13, I fixed a few gaps before connecting the frontend. I replaced the hardcoded database login in `application.properties` with `${DB_USERNAME}` and `${DB_PASSWORD}` placeholders and added `application-example.properties`. I added `@Transactional(readOnly = true)` to `PetService` reads and added `ownerId` and `ownerName` to `PetDTO`. I updated `PetDataSeeder` so pets without owners get assigned an owner on startup, added `OwnerController` and `OwnerService` for `/api/owners`, updated `WebConfig` to allow `http://localhost:5500` and `http://localhost:8080`, and built the vanilla HTML, CSS, and JS page in `src/main/resources/static/`.
+For `week13`, I made some small fixes to prepare for frontend integration. The database username and password were moved from being hardcoded in `application.properties` to `${DB_USERNAME}` and `${DB_PASSWORD}`. This was also added to `application-example.properties`. The `PetService` read methods had `@Transactional(readOnly = true)` added. `ownerId` and `ownerName` were added to `PetDTO`. The `PetDataSeeder` was changed so that any pets without an owner would be given one when starting up. `OwnerController` and `OwnerService` were created to handle the `/api/owners` endpoint. `WebConfig` was updated to allow access from `http://localhost:5500` and `http://localhost:8080`. A basic HTML/CSS/JS page was created inside `src/main/resources/static/`.
 
 ## 2. Architecture and Data Flow
 
@@ -18,7 +18,7 @@ For Week 13, I fixed a few gaps before connecting the frontend. I replaced the h
 Browser (index.html / app.js) -> Spring Boot REST (Controller / DTO -> Service -> Repository) -> MySQL (webdev2_week8)
 ```
 
-The browser handles rendering and user clicks, and only talks to Spring Boot over HTTP JSON using `getJson()`. It never connects to MySQL or stores database passwords. Controllers accept and return DTOs (`PetDTO`, `OwnerDTO`) instead of JPA entities. `PetService` and `OwnerService` map entities inside `@Transactional(readOnly = true)` so lazy fields like `pet.getOwner().getName()` load safely without `LazyInitializationException`. MySQL stores all tables and enforces primary keys, unique microchips, and foreign keys.
+The browser only communicates with Spring Boot via HTTP JSON through `getJson()` calls. No connection is made to MySQL and no database passwords are stored. The controllers only receive and send back DTO objects (`PetDTO` and `OwnerDTO`), not JPA entities. `PetService` and `OwnerService` contain the mapping between entities and ensure that any lazy field calls such as `pet.getOwner().getName()` will be safe in a transaction with `@Transactional(readOnly = true)`. All tables have been stored in MySQL with primary keys, unique microchip constraints and foreign key constraints.
 
 ## 3. API Endpoint Contract
 
@@ -29,17 +29,17 @@ The browser handles rendering and user clicks, and only talks to Spring Boot ove
 | `GET /api/owners` | None | `200 OK` array of `OwnerDTO` (`id`, `name`, `phone`) | `500` `ErrorResponse` |
 | `GET /api/owners/{id}` | Path `id` | `200 OK` `OwnerDTO` | `404` `Owner not found with id: {id}` |
 
-In `app.js`, `loadPets()` reads `page.content` instead of assuming `/api/pets` returns a raw array, and renders text with `textContent` instead of `innerHTML`.
+The `loadPets()` function in `app.js` now takes pets from `page.content` rather than expecting a raw array from `/api/pets`, and renders text with `textContent` instead of `innerHTML`.
 
 ## 4. Origins, CORS, and Config
 
-An origin is scheme + host + port, so `http://localhost:5500` and `http://localhost:8080` are different origins. In `WebConfig`, I listed `http://localhost:3000`, `http://localhost:5500`, and `http://localhost:8080` instead of opening CORS to `*`. Untrusted origins like `http://untrusted.example` get rejected with `403 Invalid CORS request`.
+The origin includes scheme, host, and port. This means `http://localhost:5500` and `http://localhost:8080` would be different origins. The origins `http://localhost:3000`, `http://localhost:5500`, `http://localhost:8080` were put into `WebConfig`. Any origins that aren't trusted will be blocked with a `403 Invalid CORS request`.
 
-I do not use `mode: "no-cors"` in `fetch()` because it gives an opaque response where JavaScript cannot read the HTTP status or JSON body. CORS only controls browser access across origins, so backend role checks (coming in Week 15) and MySQL user permissions remain separate. Browser files contain no database passwords.
+The `no-cors` option in `fetch()` isn't used since it provides an opaque response meaning there's no way for JavaScript to see the HTTP status or JSON body. CORS only deals with browser security between origins, meaning there's no issues with role checking on the backend (Week 15) and MySQL user permissions. There are no database passwords in the browser files.
 
 ## 5. Diagnosis and SQL Comparison
 
-When checking the `webdev2_week8` database, `Buddy`, `Luna`, `Max`, and `Milo` had `owner_id = NULL`, and `OPTIONS` preflight from `http://localhost:5500` returned `403` because `WebConfig` only allowed `http://localhost:3000`. Fixing `PetDataSeeder` to assign owners and adding `http://localhost:5500` and `http://localhost:8080` in `WebConfig` solved both problems.
+`Buddy`, `Luna`, `Max` and `Milo` all had `owner_id = NULL` within the `webdev2_week8` database. The `OPTIONS` preflight request (from `http://localhost:5500`) had a 403 error because `WebConfig` only allowed `http://localhost:3000`. By amending the `PetDataSeeder` file so that the pets have owners and amending `WebConfig` to include `http://localhost:5500` and `http://localhost:8080`, these issues were solved.
 
 | Check | Record for Pet ID 1 |
 |---|---|

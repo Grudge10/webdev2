@@ -22,4 +22,4 @@
 
 ## Summary
 
-Week 13 builds on `week11` on branch `week13` with MySQL `webdev2_week8`. I added placeholder env config, `@Transactional(readOnly = true)` and owner fields on `PetDTO`, the `/api/owners` read endpoint, owner seeding for pets without owners, updated `WebConfig` origins, and a vanilla HTML, CSS, and JS read page using `getJson()` and `textContent`.
+`week13` follows `week11` using branch `week13` and MySQL `webdev2_week8`. I have included dummy env config, `@Transactional(readOnly = true)`, owner fields to `PetDTO`, `/api/owners` GET endpoint, and owners seeded for pets without owners. I have added origins to `WebConfig` and a basic HTML, CSS, JS GET page which uses `getJson()` and `textContent`.

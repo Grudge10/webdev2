@@ -47,9 +47,9 @@ Open `http://localhost:8080/` in a browser after startup (set `DB_USERNAME` and 
 
 ## 4. Known Defects and Scope Notes
 
-- Create, edit, and delete forms in the browser belong to Week 14 (F2), and login and roles belong to Week 15 (F3).
-- Earlier `Task`, `User`, `Department`, and `Student` classes carried over from `prelim` and `week9` stay in the repo without blocking the Vet Clinic endpoints.
-- Frontend HTTP serving and API JSON were verified via `curl` and `./mvnw test`.
+- The create, edit and delete forms are part of week14 (F2). Login and roles are part of week15 (F3).
+- The `Task`, `User`, `Department` and `Student` classes from the previous tasks (`prelim` and `week9`) have been carried over into the repo. This does not affect the Vet Clinic endpoints.
+- We have confirmed that the frontend is serving HTTP requests and the API is returning JSON using `curl` and `./mvnw test`.
 
 ## 5. Change Log and Evidence
 
