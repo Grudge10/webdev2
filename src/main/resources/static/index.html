@@ -3,19 +3,53 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Vet Clinic Directory</title>
+    <title>Vet Clinic Manager</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
     <main class="container">
-        <h1>Vet Clinic Pets</h1>
+        <h1>Vet Clinic Manager</h1>
+
+        <section class="card">
+            <h2 id="pet-form-title">Add Pet</h2>
+            <form id="pet-form" class="form-grid">
+                <div class="field">
+                    <label for="pet-microchip">Microchip Number</label>
+                    <input id="pet-microchip" type="text" maxlength="50" required placeholder="e.g. MC-2001">
+                </div>
+                <div class="field">
+                    <label for="pet-name">Pet Name</label>
+                    <input id="pet-name" type="text" maxlength="100" required placeholder="e.g. Bantay">
+                </div>
+                <div class="field">
+                    <label for="pet-species">Species</label>
+                    <input id="pet-species" type="text" maxlength="50" required placeholder="e.g. Dog">
+                </div>
+                <div class="field">
+                    <label for="pet-breed">Breed</label>
+                    <input id="pet-breed" type="text" maxlength="100" placeholder="Optional">
+                </div>
+                <div class="field">
+                    <label for="pet-owner-select">Owner</label>
+                    <select id="pet-owner-select">
+                        <option value="">No owner selected</option>
+                    </select>
+                </div>
+                <div class="row form-actions">
+                    <button type="submit" id="pet-save-btn">Save Pet</button>
+                    <button type="button" id="pet-cancel-btn" class="secondary" hidden>Cancel Edit</button>
+                </div>
+            </form>
+            <p id="pet-form-status" class="status"></p>
+        </section>
 
         <section class="card">
             <h2>Pet List</h2>
             <form id="filter-form" class="row">
+                <label for="species-input" class="sr-label">Filter species</label>
                 <input id="species-input" type="text" placeholder="Filter by species (e.g. Dog)">
                 <button type="submit">Filter</button>
-                <button type="button" id="reset-btn">Reset</button>
+                <button type="button" id="reset-btn" class="secondary">Reset</button>
             </form>
 
             <p id="pets-status" class="status"></p>
@@ -24,10 +58,11 @@
                 <thead>
                     <tr>
                         <th>ID</th>
+                        <th>Microchip</th>
                         <th>Name</th>
                         <th>Species</th>
                         <th>Owner</th>
-                        <th>Action</th>
+                        <th>Actions</th>
                     </tr>
                 </thead>
                 <tbody id="pets-body"></tbody>
@@ -43,6 +78,7 @@
         <section class="card">
             <h2>Pet Detail</h2>
             <form id="lookup-form" class="row">
+                <label for="pet-id-input" class="sr-label">Pet ID</label>
                 <input id="pet-id-input" type="number" min="1" placeholder="Enter Pet ID (e.g. 1 or 999)">
                 <button type="submit">Find</button>
             </form>
@@ -51,9 +87,79 @@
         </section>
 
         <section class="card">
-            <h2>Owners</h2>
+            <h2 id="owner-form-title">Add Owner</h2>
+            <form id="owner-form" class="form-grid">
+                <div class="field">
+                    <label for="owner-name">Owner Name</label>
+                    <input id="owner-name" type="text" maxlength="100" required placeholder="e.g. Ana Navarro">
+                </div>
+                <div class="field">
+                    <label for="owner-phone">Phone</label>
+                    <input id="owner-phone" type="text" maxlength="30" placeholder="e.g. 09171234567">
+                </div>
+                <div class="row form-actions">
+                    <button type="submit" id="owner-save-btn">Save Owner</button>
+                    <button type="button" id="owner-cancel-btn" class="secondary" hidden>Cancel Edit</button>
+                </div>
+            </form>
             <p id="owners-status" class="status"></p>
-            <ul id="owners-list"></ul>
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Name</th>
+                        <th>Phone</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="owners-body"></tbody>
+            </table>
+        </section>
+
+        <section class="card">
+            <h2>Book Appointment</h2>
+            <form id="booking-form" class="form-grid">
+                <div class="field">
+                    <label for="booking-pet-select">Pet</label>
+                    <select id="booking-pet-select" required></select>
+                </div>
+                <div class="field">
+                    <label for="booking-vet-select">Veterinarian</label>
+                    <select id="booking-vet-select" required></select>
+                </div>
+                <div class="field">
+                    <label for="booking-date">Appointment Date</label>
+                    <input id="booking-date" type="date" required>
+                </div>
+                <div class="field">
+                    <label for="booking-reason">Reason</label>
+                    <input id="booking-reason" type="text" maxlength="255" required placeholder="e.g. Checkup">
+                </div>
+                <div class="field">
+                    <label for="booking-fee">Fee (PHP)</label>
+                    <input id="booking-fee" type="number" step="0.01" required value="500.00">
+                </div>
+                <div class="row form-actions">
+                    <button type="submit" id="booking-save-btn">Book Appointment</button>
+                </div>
+            </form>
+            <p id="booking-status" class="status"></p>
+
+            <h3>Scheduled Appointments</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Date</th>
+                        <th>Pet</th>
+                        <th>Owner</th>
+                        <th>Veterinarian</th>
+                        <th>Reason</th>
+                        <th>Fee</th>
+                    </tr>
+                </thead>
+                <tbody id="appointments-body"></tbody>
+            </table>
         </section>
     </main>
 

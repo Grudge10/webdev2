@@ -7,7 +7,7 @@ body {
 }
 
 .container {
-    max-width: 850px;
+    max-width: 920px;
     margin: 0 auto;
 }
 
@@ -18,6 +18,12 @@ h1 {
 h2 {
     margin-top: 0;
     font-size: 18px;
+}
+
+h3 {
+    margin-top: 16px;
+    margin-bottom: 8px;
+    font-size: 15px;
 }
 
 .card {
@@ -33,12 +39,42 @@ h2 {
     gap: 8px;
     align-items: center;
     margin-bottom: 12px;
+    flex-wrap: wrap;
 }
 
-input {
+.form-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 10px 12px;
+    align-items: end;
+}
+
+.field {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+label {
+    font-size: 13px;
+    font-weight: bold;
+}
+
+.sr-label {
+    position: absolute;
+    left: -9999px;
+}
+
+input,
+select {
     padding: 6px 10px;
     border: 1px solid #ccc;
     border-radius: 4px;
+    font-size: 14px;
+}
+
+.form-actions {
+    margin-bottom: 0;
 }
 
 button {
@@ -50,9 +86,19 @@ button {
     cursor: pointer;
 }
 
+button.secondary {
+    background-color: #e5e7eb;
+    border-color: #d1d5db;
+    color: #111827;
+}
+
+button.danger {
+    background-color: #dc2626;
+    border-color: #b91c1c;
+}
+
 button:disabled {
-    background-color: #93c5fd;
-    border-color: #93c5fd;
+    opacity: 0.6;
     cursor: default;
 }
 
@@ -73,6 +119,11 @@ th {
     background-color: #f9fafb;
 }
 
+.actions-cell {
+    display: flex;
+    gap: 6px;
+}
+
 .pager {
     justify-content: space-between;
     margin-bottom: 0;
@@ -85,5 +136,10 @@ th {
 
 .error {
     color: #b91c1c;
+    font-weight: bold;
+}
+
+.success {
+    color: #15803d;
     font-weight: bold;
 }
