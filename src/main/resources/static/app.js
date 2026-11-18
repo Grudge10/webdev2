@@ -50,11 +50,14 @@ const appointmentsBody = document.querySelector("#appointments-body");
 async function request(path, options = {}) {
     const response = await fetch(`${API_BASE}${path}`, options);
     const type = response.headers.get("content-type") || "";
-    const body = response.status === 204
-        ? null
-        : type.includes("application/json")
-            ? await response.json()
-            : await response.text();
+    let body = null;
+    if (response.status !== 204) {
+        if (type.includes("application/json")) {
+            body = await response.json();
+        } else {
+            body = await response.text();
+        }
+    }
 
     if (!response.ok) {
         let message = `Request failed (${response.status})`;
@@ -153,11 +156,9 @@ async function loadPets() {
             }
 
             const actionTd = document.createElement("td");
-            actionTd.className = "actions-cell";
 
             const viewBtn = document.createElement("button");
             viewBtn.type = "button";
-            viewBtn.className = "secondary";
             viewBtn.textContent = "View";
             viewBtn.addEventListener("click", () => {
                 petIdInput.value = pet.id;
@@ -171,7 +172,6 @@ async function loadPets() {
 
             const deleteBtn = document.createElement("button");
             deleteBtn.type = "button";
-            deleteBtn.className = "danger";
             deleteBtn.textContent = "Delete";
             deleteBtn.addEventListener("click", () => deletePet(pet, rows.length));
 
@@ -199,7 +199,8 @@ async function deletePet(pet, rowCount) {
             resetPetForm();
         }
         setStatus(petFormStatus, `Deleted pet "${pet.name}".`, "success");
-        await Promise.all([loadPets(), loadPetOptions()]);
+        await loadPets();
+        await loadPetOptions();
     } catch (error) {
         setStatus(petsStatus, error.message, "error");
     }
@@ -262,7 +263,6 @@ async function loadOwners() {
                 tr.append(td);
             }
             const actionTd = document.createElement("td");
-            actionTd.className = "actions-cell";
 
             const editBtn = document.createElement("button");
             editBtn.type = "button";
@@ -271,7 +271,6 @@ async function loadOwners() {
 
             const deleteBtn = document.createElement("button");
             deleteBtn.type = "button";
-            deleteBtn.className = "danger";
             deleteBtn.textContent = "Delete";
             deleteBtn.addEventListener("click", () => deleteOwner(owner));
 
@@ -402,7 +401,8 @@ petForm.addEventListener("submit", async (e) => {
             setStatus(petFormStatus, `Updated pet "${name}".`, "success");
         }
         resetPetForm();
-        await Promise.all([loadPets(), loadPetOptions()]);
+        await loadPets();
+        await loadPetOptions();
     } catch (error) {
         setStatus(petFormStatus, error.message, "error");
     } finally {
@@ -446,7 +446,9 @@ ownerForm.addEventListener("submit", async (e) => {
                 body: JSON.stringify(payload)
             });
             resetOwnerForm();
-            await Promise.all([loadOwners(), loadPets(), loadAppointments()]);
+            await loadOwners();
+            await loadPets();
+            await loadAppointments();
             setStatus(ownersStatus, `Updated owner "${name}".`, "success");
         }
     } catch (error) {
@@ -485,7 +487,8 @@ bookingForm.addEventListener("submit", async (e) => {
             body: JSON.stringify(payload)
         });
         bookingReasonInput.value = "";
-        await Promise.all([loadVets(), loadAppointments()]);
+        await loadVets();
+        await loadAppointments();
         setStatus(bookingStatus, `Booked appointment #${booked.id} for ${booked.petName} with ${booked.vetName}.`, "success");
     } catch (error) {
         setStatus(bookingStatus, error.message, "error");
@@ -527,4 +530,12 @@ document.querySelector("#lookup-form").addEventListener("submit", (e) => {
     loadPetDetail(petIdInput.value.trim());
 });
 
-Promise.all([loadPets(), loadOwners(), loadPetOptions(), loadVets(), loadAppointments()]);
+async function init() {
+    await loadPets();
+    await loadOwners();
+    await loadPetOptions();
+    await loadVets();
+    await loadAppointments();
+}
+
+init();

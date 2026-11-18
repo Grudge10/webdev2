@@ -7,7 +7,7 @@ body {
 }
 
 .container {
-    max-width: 920px;
+    max-width: 900px;
     margin: 0 auto;
 }
 
@@ -38,31 +38,20 @@ h3 {
     display: flex;
     gap: 8px;
     align-items: center;
-    margin-bottom: 12px;
     flex-wrap: wrap;
-}
-
-.form-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-    gap: 10px 12px;
-    align-items: end;
+    margin-bottom: 12px;
 }
 
 .field {
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
+    display: inline-block;
+    margin: 0 8px 8px 0;
+    vertical-align: top;
 }
 
-label {
+.field label {
+    display: block;
     font-size: 13px;
-    font-weight: bold;
-}
-
-.sr-label {
-    position: absolute;
-    left: -9999px;
+    margin-bottom: 4px;
 }
 
 input,
@@ -70,11 +59,6 @@ select {
     padding: 6px 10px;
     border: 1px solid #ccc;
     border-radius: 4px;
-    font-size: 14px;
-}
-
-.form-actions {
-    margin-bottom: 0;
 }
 
 button {
@@ -86,19 +70,9 @@ button {
     cursor: pointer;
 }
 
-button.secondary {
-    background-color: #e5e7eb;
-    border-color: #d1d5db;
-    color: #111827;
-}
-
-button.danger {
-    background-color: #dc2626;
-    border-color: #b91c1c;
-}
-
 button:disabled {
-    opacity: 0.6;
+    background-color: #93c5fd;
+    border-color: #93c5fd;
     cursor: default;
 }
 
@@ -119,9 +93,8 @@ th {
     background-color: #f9fafb;
 }
 
-.actions-cell {
-    display: flex;
-    gap: 6px;
+td button {
+    margin-right: 4px;
 }
 
 .pager {

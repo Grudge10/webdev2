@@ -46,9 +46,9 @@ JAVA_HOME=$HOME/dev-tools/jdk-21.0.13+9/Contents/Home ./mvnw spring-boot:run
 
 ## 4. Known Defects and Scope Notes
 
-- Fixed `NoResourceFoundException` in `GlobalExceptionHandler.java` so requests to missing paths like `/favicon.ico` return `404` instead of `500`.
-- Login, password hashing, CSRF tokens, and role permissions belong to `week15` (`F3`).
-- Earlier `Task`, `User`, `Department`, and `Student` classes from `prelim` and `week9` remain in the repo without affecting Vet Clinic CRUD or booking workflows.
+- Fixed `NoResourceFoundException` in `GlobalExceptionHandler.java`. Therefore, when a path does not exist (e.g. `/favicon.ico`), a `404` response is given.
+- Login, password hashing, CSRF tokens, and roles are part of `F3` (`week15`).
+- The `Task`, `User`, `Department`, and `Student` classes from `prelim` and `week9` have been carried forward, but do not affect any Vet Clinic CRUD operations or booking functions.
 
 ## 5. Change Log and Evidence
 

@@ -6,31 +6,29 @@
 
 ## 1. Form and API Data Flow (`PUT` vs `PATCH`)
 
-- On the frontend (`src/main/resources/static/app.js`), both the **Pet** and **Owner** forms call `event.preventDefault()`, trim user inputs, disable the submit button while awaiting `request()`, and re-enable the button in `finally`.
-- Relationship dropdowns (`#pet-owner-select`, `#booking-pet-select`, `#booking-vet-select`) are populated directly from `GET /api/owners`, `GET /api/pets?page=0&size=100`, and `GET /api/veterinarians`. The selected record ID is kept in `<option value="...">` separately from the label shown to the user.
-- For **Create** (`POST /api/pets`, `POST /api/owners`), no generated `id` is sent in the JSON payload.
-- For **Update**, `PUT` and `PATCH` are kept distinct in `PetService`:
-  - `PUT /api/pets/{id}` (`PetService.update`) requires all core fields (`microchipNumber`, `name`, `species`) and replaces the complete updatable representation, including clearing or reassigning `ownerId`. Passing a partial payload without required fields throws `400 Bad Request`.
-  - `PATCH /api/pets/{id}` (`PetService.patch`) updates only non-null fields present in `UpdatePetRequest`, leaving omitted fields unchanged.
-- In `app.js`, `request()` checks `response.status === 204 ? null` so `DELETE` responses do not fail trying to call `response.json()`.
+In `app.js`, the Pet and Owner forms prevent default form submission, clean user input, and disable the submit button until the request finishes. The submit button is enabled in the `finally` block. The dropdowns for relationships (`#pet-owner-select`, `#booking-pet-select`, `#booking-vet-select`) have their options filled from `GET /api/owners`, `GET /api/pets?page=0&size=100`, and `GET /api/veterinarians`. Each option stores the ID of the entity in `value`, while the visible text displayed to the user is different from the ID. In create requests (`POST /api/pets`, `POST /api/owners`), no ID is included in the request body.
+
+**Update:**
+In `PetService`, `PUT` and `PATCH` are separated. `PUT /api/pets/{id}` (`PetService.update`) requires all required fields (`microchipNumber`, `name`, `species`) and replaces the full updatable representation, including resetting or setting `ownerId`. If required fields are missing, a `400 Bad Request` error is returned. `PATCH /api/pets/{id}` (`PetService.patch`) only updates the non-null fields in `UpdatePetRequest`, leaving other fields unchanged. In `app.js`, if the status is `204`, the response body is set to `null`. This prevents errors when calling `.json()` on `DELETE` responses.
 
 ## 2. Client, Server, and Database Validation Responsibilities
 
-1. **Client (`index.html` / `app.js`):** HTML `required`/`maxlength` attributes and blank checks give fast feedback and preserve failed inputs when a request fails so the user can edit without retyping.
-2. **Server (`CreatePetRequest`, `OwnerRequest`, `BookAppointmentRequest`, `GlobalExceptionHandler`):** Bean Validation (`@NotBlank`, `@Size`, `@DecimalMin("0.00")`) and service checks (`ConflictException`, `ResourceNotFoundException`) return structured `400`, `404`, and `409` JSON `ErrorResponse` payloads even if someone calls the API directly with `curl`.
-3. **Database (MySQL `webdev2_week8`):** `NOT NULL`, `UNIQUE (microchip_number)`, `UNIQUE (pet_id, appointment_date)`, `FOREIGN KEY`, and `CHECK (fee >= 0.00)` / `CHECK (available_slots >= 0)` remain the final guardrail if another client writes directly to MySQL.
+- **Client (`index.html`/`app.js`):** Constraints (`required` and `maxlength`) allow quick validation. If an error occurs during requests, erroneous data is preserved in the form to allow changes in the UI without re-typing.
+- **Server (`CreatePetRequest`, `OwnerRequest`, `BookAppointmentRequest`, `GlobalExceptionHandler`):** `jakarta.validation` annotations (such as `@NotBlank`, `@Size`, `@DecimalMin("0.00")`) within the DTOs and exceptions (`ConflictException`, `ResourceNotFoundException`) within services produce standardised `400`, `404`, and `409` responses with `ErrorResponse` JSON objects. These still apply if the API is called directly with `curl`.
+- **Database (MySQL `webdev2_week8`):** Constraints (`NOT NULL`, `UNIQUE (microchip_number)`, `UNIQUE (pet_id, appointment_date)`, `FOREIGN KEY`, `fee >= 0.00`, and `available_slots >= 0`) within the database are the last line of defence, in case data is sent directly to MySQL from another client application.
 
 ## 3. Delete Policy and Transaction Boundary Decisions
 
-- **Delete Policy (`409 Conflict` instead of silent cascade):** `Owner` and `Pet` no longer cascade deletes to child history (`orphanRemoval` removed from `Owner.pets`, `CascadeType.ALL` removed from `Pet.appointments`). `OwnerService.delete` rejects deleting an owner with registered pets (`409`), and `PetService.delete` rejects deleting a pet with appointments (`409`), matching MySQL's `ON DELETE RESTRICT` foreign keys.
-- **Atomic Booking Transaction (`AppointmentService.bookAppointment`):**
-  - Instead of making two separate HTTP calls from the browser, `app.js` calls one endpoint: `POST /api/appointments/book`.
-  - `AppointmentService.bookAppointment` is a public `@Transactional` method called through Spring's proxy so all writes run inside one MySQL transaction.
-  - Step 1 checks the veterinarian exists and runs `VeterinarianRepository.decrementSlotIfAvailable(id)` (`UPDATE veterinarian SET available_slots = available_slots - 1 WHERE id = :id AND available_slots > 0`). Only `changed == 1` proceeds.
-  - Step 2 looks up the pet, checks `existsByPetIdAndAppointmentDate(...)` (so one pet cannot book twice on the same day), and saves the `Appointment` via `saveAndFlush`. If step 2 throws `ResourceNotFoundException` (`404`) or `ConflictException` (`409`), Spring rolls back step 1 cleanly so `available_slots` stays unchanged.
-  - Slot counts and constraints are decided on the server, never trusted from client inputs.
+- **Deletion Policy (No Silent Cascading Deletion):** Owner and Pet do not delete child histories anymore. `orphanRemoval` has been removed from `Owner.pets` and `CascadeType.ALL` from `Pet.appointments`. Deleting any Owner with registered Pets returns a `409` status code, and deleting any Pet with appointments also returns a `409` response. This matches the behaviour of MySQL foreign keys with `ON DELETE RESTRICT`.
+- **Atomic Booking (`AppointmentService.bookAppointment`):**
+  A single request is made from `app.js` to `POST /api/appointments/book`. The public method `AppointmentService.bookAppointment` is called through the Spring proxy, meaning all database changes occur as a single MySQL transaction:
+  - **Step 1:** Check if the requested Veterinarian exists. Call `VeterinarianRepository.decrementSlotIfAvailable(id)`. This SQL statement decrements `available_slots` by `1` if `available_slots > 0`, and proceeds only if `changed == 1`.
+  - **Step 2:** Find the Pet and check it does not have another booking on the same date (`existsByPetIdAndAppointmentDate(...)`). Create the `Appointment` and call `saveAndFlush()`. If anything during Step 2 fails (`ResourceNotFoundException` `404` or `ConflictException` `409`), Spring rolls back the changes made in Step 1 so the veterinarian's available slots remain the same.
+  The number of available slots and constraints will always be determined server-side, as client data should never be trusted.
 
 ## 4. Test Interpretation and Diagnosed Defect
 
-- **Positive & Negative Outcomes:** Browser and `curl` tests confirmed `201` creates, `200` `PUT`/`PATCH` updates, `204` deletes after `confirm()`, `400` field errors (`name` under 2 chars, negative booking fee `-50.00`, missing `PUT` fields), `404` missing `Pet` (`999`), `409` duplicate microchip (`MC-1001`) and in-use deletes, network failure recovery on `:5500` with backend stopped, and MySQL-verified booking commit (`Dr. Reyes` `3 -> 2` slots) vs rollback (`Dr. Villanueva` stayed at `3`).
-- **Repaired Defect:** While checking Spring Boot console logs during browser testing, automatic browser requests to `/favicon.ico` threw `NoResourceFoundException`, which fell into the generic `Exception` handler and returned `500` with a stack trace. Added `NoResourceFoundException.class` to `GlobalExceptionHandler.handleNotFound` so missing static paths return clean `404` JSON without noisy `500` errors.
+- **Positive/Negative Behaviours Confirmed:**
+  Confirmed `201 Created`, `200` updated (`PUT`/`PATCH`), `204` deleted with confirmation, `400` invalid inputs (name too short `< 2`, negative booking fee `-50.00`, missing fields on `PUT`), `404` (Pet `999` does not exist), and `409` (duplicate microchip `MC-1001`, delete while in use). Tested recovery from network communication failures on port `5500` when the backend was down. Bookings were committed (`Dr. Reyes` reduced to `2` slots) and rolled back (`Dr. Villanueva` remained at `3` slots) in MySQL.
+- **Defect Fixed:**
+  Testing via the browser caused automatic requests to `/favicon.ico`, which triggered `NoResourceFoundException` errors. Because this exception was not handled specifically, it fell through to the general `Exception` handler, returning status `500` with a stack trace logged on the server. Adding `NoResourceFoundException.class` to `handleNotFound` in `GlobalExceptionHandler` ensures missing static resource paths return a clean `404` JSON response instead of `500`.

@@ -12,7 +12,7 @@
 
         <section class="card">
             <h2 id="pet-form-title">Add Pet</h2>
-            <form id="pet-form" class="form-grid">
+            <form id="pet-form">
                 <div class="field">
                     <label for="pet-microchip">Microchip Number</label>
                     <input id="pet-microchip" type="text" maxlength="50" required placeholder="e.g. MC-2001">
@@ -35,9 +35,9 @@
                         <option value="">No owner selected</option>
                     </select>
                 </div>
-                <div class="row form-actions">
+                <div class="row">
                     <button type="submit" id="pet-save-btn">Save Pet</button>
-                    <button type="button" id="pet-cancel-btn" class="secondary" hidden>Cancel Edit</button>
+                    <button type="button" id="pet-cancel-btn" hidden>Cancel Edit</button>
                 </div>
             </form>
             <p id="pet-form-status" class="status"></p>
@@ -46,10 +46,10 @@
         <section class="card">
             <h2>Pet List</h2>
             <form id="filter-form" class="row">
-                <label for="species-input" class="sr-label">Filter species</label>
+                <label for="species-input">Species</label>
                 <input id="species-input" type="text" placeholder="Filter by species (e.g. Dog)">
                 <button type="submit">Filter</button>
-                <button type="button" id="reset-btn" class="secondary">Reset</button>
+                <button type="button" id="reset-btn">Reset</button>
             </form>
 
             <p id="pets-status" class="status"></p>
@@ -78,7 +78,7 @@
         <section class="card">
             <h2>Pet Detail</h2>
             <form id="lookup-form" class="row">
-                <label for="pet-id-input" class="sr-label">Pet ID</label>
+                <label for="pet-id-input">Pet ID</label>
                 <input id="pet-id-input" type="number" min="1" placeholder="Enter Pet ID (e.g. 1 or 999)">
                 <button type="submit">Find</button>
             </form>
@@ -88,7 +88,7 @@
 
         <section class="card">
             <h2 id="owner-form-title">Add Owner</h2>
-            <form id="owner-form" class="form-grid">
+            <form id="owner-form">
                 <div class="field">
                     <label for="owner-name">Owner Name</label>
                     <input id="owner-name" type="text" maxlength="100" required placeholder="e.g. Ana Navarro">
@@ -97,9 +97,9 @@
                     <label for="owner-phone">Phone</label>
                     <input id="owner-phone" type="text" maxlength="30" placeholder="e.g. 09171234567">
                 </div>
-                <div class="row form-actions">
+                <div class="row">
                     <button type="submit" id="owner-save-btn">Save Owner</button>
-                    <button type="button" id="owner-cancel-btn" class="secondary" hidden>Cancel Edit</button>
+                    <button type="button" id="owner-cancel-btn" hidden>Cancel Edit</button>
                 </div>
             </form>
             <p id="owners-status" class="status"></p>
@@ -118,7 +118,7 @@
 
         <section class="card">
             <h2>Book Appointment</h2>
-            <form id="booking-form" class="form-grid">
+            <form id="booking-form">
                 <div class="field">
                     <label for="booking-pet-select">Pet</label>
                     <select id="booking-pet-select" required></select>
@@ -139,7 +139,7 @@
                     <label for="booking-fee">Fee (PHP)</label>
                     <input id="booking-fee" type="number" step="0.01" required value="500.00">
                 </div>
-                <div class="row form-actions">
+                <div class="row">
                     <button type="submit" id="booking-save-btn">Book Appointment</button>
                 </div>
             </form>

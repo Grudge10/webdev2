@@ -22,4 +22,4 @@
 
 ## Summary
 
-`week14` builds on `week13` with persisted CRUD for Pets and Owners, relationship selection populated from the API, deliberate `409` delete protection, `request()` handling for `204` and structured validation errors, and an atomic `POST /api/appointments/book` workflow backed by MySQL rollback verification.
+Extended CRUD for pets and owners, relationship selection from the API, protected deletion (status code `409`), and using `request()` to handle `204` status codes and validation errors, along with a `POST /api/appointments/book` endpoint backed by MySQL to ensure atomicity and verified with rollbacks.
