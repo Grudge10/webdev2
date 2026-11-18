@@ -17,9 +17,11 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import java.util.Optional;
+import java.util.Set;
 
 @Service
 public class PetService {
+    private static final Set<String> ALLOWED_SORTS = Set.of("id", "microchipNumber", "name", "species", "breed");
     private final PetRepository petRepository;
     private final OwnerRepository ownerRepository;
     private final AppointmentRepository appointmentRepository;
@@ -46,6 +48,9 @@ public class PetService {
 
     @Transactional(readOnly = true)
     public Page<PetDTO> findAll(Optional<String> species, int page, int size, String sort, String direction) {
+        if (page < 0 || size < 1) {
+            throw new IllegalArgumentException("Page must be >= 0 and size must be >= 1");
+        }
         String sortField = sort;
         String sortDir = direction;
         if (sort != null && sort.contains(",")) {
@@ -54,6 +59,9 @@ public class PetService {
             if (parts.length > 1) {
                 sortDir = parts[1].trim();
             }
+        }
+        if (!ALLOWED_SORTS.contains(sortField)) {
+            throw new IllegalArgumentException("Unsupported sort field: " + sortField);
         }
         Sort sorting = sortDir.equalsIgnoreCase("asc")
                 ? Sort.by(sortField).ascending()

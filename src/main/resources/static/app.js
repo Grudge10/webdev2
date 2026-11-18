@@ -5,6 +5,7 @@ let totalPages = 1;
 let currentSpecies = "";
 let editingPetId = null;
 let editingOwnerId = null;
+let currentDetailPetId = null;
 let csrfState = null;
 let currentUser = null;
 
@@ -142,6 +143,7 @@ async function request(path, options = {}) {
 
 function applySignedOut(message = "Sign in to view or manage clinic records.", statusType = "") {
     currentUser = null;
+    currentDetailPetId = null;
     loginPanel.hidden = false;
     userPanel.hidden = true;
     clinicWorkspace.hidden = true;
@@ -286,6 +288,11 @@ async function deletePet(pet, rowCount) {
         if (editingPetId === pet.id) {
             resetPetForm();
         }
+        if (currentDetailPetId === pet.id) {
+            currentDetailPetId = null;
+            petDetail.replaceChildren();
+            setStatus(detailStatus, "Select a pet or enter an ID.");
+        }
         setStatus(petFormStatus, `Deleted pet "${pet.name}".`, "success");
         await loadPets();
         await loadPetOptions();
@@ -305,6 +312,7 @@ async function loadPetDetail(id) {
 
     try {
         const pet = await request(`/api/pets/${id}`);
+        currentDetailPetId = pet.id;
         setStatus(detailStatus, "");
         const lines = [
             `ID: ${pet.id}`,
@@ -534,12 +542,16 @@ petForm.addEventListener("submit", async (e) => {
             });
             setStatus(petFormStatus, `Created pet "${name}".`, "success");
         } else {
-            await request(`/api/pets/${editingPetId}`, {
+            const targetId = editingPetId;
+            await request(`/api/pets/${targetId}`, {
                 method: "PUT",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(payload)
             });
             setStatus(petFormStatus, `Updated pet "${name}".`, "success");
+            if (currentDetailPetId === targetId) {
+                await loadPetDetail(targetId);
+            }
         }
         resetPetForm();
         await loadPets();

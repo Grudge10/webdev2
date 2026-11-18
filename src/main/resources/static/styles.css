@@ -80,6 +80,17 @@ button:disabled {
     cursor: default;
 }
 
+.table-wrap {
+    overflow-x: auto;
+}
+
+button:focus-visible,
+input:focus-visible,
+select:focus-visible {
+    outline: 2px solid #1d4ed8;
+    outline-offset: 2px;
+}
+
 table {
     width: 100%;
     border-collapse: collapse;
