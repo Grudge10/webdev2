@@ -7,6 +7,7 @@ Base URL: `http://localhost:8080`
 | Method | Path | Access | Description | Status Codes |
 |---|---|---|---|---|
 | `GET` | `/api/auth/csrf` | Public | Returns `{ headerName, parameterName, token }` for current session | `200` |
+| `GET` | `/api/health` | Public | Lightweight DB connectivity check (`{"status":"UP","database":"UP"}`) | `200`, `503` |
 | `POST` | `/api/auth/login` | Public (+ CSRF) | Authenticates credentials (`LoginRequest`), sets `HttpOnly` session cookie, rotates CSRF token | `200`, `400`, `401`, `403` |
 | `GET` | `/api/auth/me` | Authenticated | Returns current `{ username, role }` without password hash | `200`, `401` |
 | `POST` | `/api/auth/logout` | Authenticated (+ CSRF) | Invalidates HTTP session and clears security context | `204`, `401`, `403` |

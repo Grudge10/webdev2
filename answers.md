@@ -1,17 +1,22 @@
-# WEBDEV2 Week 16 Answers (F4)
+# WEBDEV2 Week 17 Answers (F5)
 
 **Name:** Jan Liam E. Arias  
 **Student ID:** 2510499  
 **GitHub Repository URL:** https://github.com/Grudge10/webdev2  
-**Branch:** `week16`  
-**Date Submitted:** 2026-11-20
+**Branch:** `week17`  
+**Date Submitted:** 2026-11-21
 
-## Week 16 Documents
+## Week 17 Documents
 
-- [Lecture Notes (Testing, Isolation, Defects)](docs/week16/lecture.md)
-- [Test Matrix](docs/week16/test_matrix.md)
-- [Test Report](docs/week16/test_report.md)
-- [Defects Log](docs/week16/defects.md)
-- [Checkpoint Report](docs/week16/checkpoint.md)
-- [Maven Test Output](docs/week16/evidence/maven_test_output.txt)
-- [INFOMAN1 Week 16 Evidence](https://github.com/Grudge10/infoman1/tree/main/week16)
+- [Setup & Build Guide](docs/week17/setup.md)
+- [User Guide](docs/week17/user_guide.md)
+- [Release UAT Report](docs/week17/uat.md)
+- [Lecture Notes (Deployment, Configuration, Release)](docs/week17/lecture.md)
+- [Checkpoint & Handoff](docs/week17/checkpoint.md)
+- [API Documentation](API.md)
+
+## Evidence
+
+- [Clean Verify Output](docs/week17/evidence/clean_verify_output.txt)
+- [Release UAT Output](docs/week17/evidence/release_uat_output.txt)
+- [INFOMAN1 Week 17 Release & Restore](https://github.com/Grudge10/infoman1/tree/main/week17)
