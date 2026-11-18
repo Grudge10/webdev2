@@ -1,0 +1,40 @@
+=== 1. Anonymous GET /api/pets (expect 401) ===
+{"status":401,"message":"Authentication required","timestamp":1794995915843,"errors":null}
+HTTP_STATUS:401
+
+=== 2. Invalid password POST /api/auth/login (expect 401) ===
+{"status":401,"message":"Invalid username or password","timestamp":1794995916270,"errors":null}
+HTTP_STATUS:401
+
+=== 3. Valid READER POST /api/auth/login (expect 200) ===
+{"username":"clinic_viewer","role":"READER"}
+HTTP_STATUS:200
+
+=== 4. READER GET /api/pets (expect 200) ===
+{"content":[{"breed":"Golden Retriever","id":1,"microchipNumber":"MC-1001","name":"Buddy","ownerId":1,"ownerName":"Maria Santos","species":"Dog"},{"breed":"Siamese","id":2,"microchipNumber":"MC-1002","name":"Luna","ownerId":2,"ownerName":"Carlos Mendoza","species":"Cat"}],"empty":false,"first":true,"last":false,"number":0,"numberOfElements":2,"pageable":{"offset":0,"pageNumber":0,"pageSize":2,"paged":true,"sort":{"empty":false,"sorted":true,"unsorted":false},"unpaged":false},"size":2,"sort":{"empty":false,"sorted":true,"unsorted":false},"totalElements":5,"totalPages":3}
+HTTP_STATUS:200
+
+=== 5. READER POST /api/pets WITH valid CSRF (expect 403 role denial) ===
+{"status":403,"message":"Forbidden: insufficient role or invalid CSRF token","timestamp":1794995916522,"errors":null}
+HTTP_STATUS:403
+
+=== 6. MANAGER login + missing CSRF POST /api/pets (expect 403 CSRF denial) ===
+{"username":"clinic_manager","role":"MANAGER"}
+HTTP_STATUS:200
+
+{"status":403,"message":"Forbidden: insufficient role or invalid CSRF token","timestamp":1794995916709,"errors":null}
+HTTP_STATUS:403
+
+=== 7. MANAGER POST /api/pets & DELETE WITH valid rotated CSRF (expect 201 & 204) ===
+{"breed":null,"id":25,"microchipNumber":"MC-SEC900","name":"CurlSecPet","ownerId":null,"ownerName":null,"species":"Cat"}
+HTTP_STATUS:201
+
+
+HTTP_STATUS:204
+
+=== 8. MANAGER Logout + subsequent GET /api/pets (expect 204 then 401) ===
+
+HTTP_STATUS:204
+
+{"status":401,"message":"Authentication required","timestamp":1794995916854,"errors":null}
+HTTP_STATUS:401

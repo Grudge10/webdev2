@@ -1,0 +1,273 @@
+[INFO] Scanning for projects...
+[INFO] 
+[INFO] ------------------------< com.webdev2:webdev2 >-------------------------
+[INFO] Building webdev2 0.0.1-SNAPSHOT
+[INFO]   from pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- resources:3.5.0:resources (default-resources) @ webdev2 ---
+[INFO] Copying 2 resources from src/main/resources to target/classes
+[INFO] Copying 7 resources from src/main/resources to target/classes
+[INFO] 
+[INFO] --- compiler:3.15.0:compile (default-compile) @ webdev2 ---
+[INFO] Nothing to compile - all classes are up to date.
+[INFO] 
+[INFO] --- resources:3.5.0:testResources (default-testResources) @ webdev2 ---
+[INFO] skip non existing resourceDirectory /Users/grudge/Downloads/Coding/webdev2/src/test/resources
+[INFO] 
+[INFO] --- compiler:3.15.0:testCompile (default-testCompile) @ webdev2 ---
+[INFO] Nothing to compile - all classes are up to date.
+[INFO] 
+[INFO] --- surefire:3.5.6:test (default-test) @ webdev2 ---
+[INFO] Using auto detected provider org.apache.maven.surefire.junitplatform.JUnitPlatformProvider
+[INFO] 
+[INFO] -------------------------------------------------------
+[INFO]  T E S T S
+[INFO] -------------------------------------------------------
+[INFO] Running com.webdev2.Webdev2ApplicationTests
+18:00:09.205 [main] INFO org.springframework.test.context.support.AnnotationConfigContextLoaderUtils -- Could not detect default configuration classes for test class [com.webdev2.Webdev2ApplicationTests]: Webdev2ApplicationTests does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+18:00:09.269 [main] INFO org.springframework.boot.test.context.SpringBootTestContextBootstrapper -- Found @SpringBootConfiguration com.webdev2.Webdev2Application for test class com.webdev2.Webdev2ApplicationTests
+18:00:09.316 [main] INFO org.springframework.test.context.support.AnnotationConfigContextLoaderUtils -- Could not detect default configuration classes for test class [com.webdev2.Webdev2ApplicationTests]: Webdev2ApplicationTests does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+18:00:09.317 [main] INFO org.springframework.boot.test.context.SpringBootTestContextBootstrapper -- Found @SpringBootConfiguration com.webdev2.Webdev2Application for test class com.webdev2.Webdev2ApplicationTests
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+
+ :: Spring Boot ::                (v4.1.1)
+
+2026-11-18T18:00:09.724+08:00  INFO 50998 --- [webdev2] [           main] com.webdev2.Webdev2ApplicationTests      : Starting Webdev2ApplicationTests using Java 21.0.13 with PID 50998 (started by grudge in /Users/grudge/Downloads/Coding/webdev2)
+2026-11-18T18:00:09.726+08:00  INFO 50998 --- [webdev2] [           main] com.webdev2.Webdev2ApplicationTests      : No active profile set, falling back to 1 default profile: "default"
+2026-11-18T18:00:10.157+08:00  INFO 50998 --- [webdev2] [           main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-11-18T18:00:10.199+08:00  INFO 50998 --- [webdev2] [           main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 36 ms. Found 11 JPA repository interfaces.
+2026-11-18T18:00:10.558+08:00  INFO 50998 --- [webdev2] [           main] org.hibernate.orm.jpa                    : HHH008540: Processing PersistenceUnitInfo [name: default]
+2026-11-18T18:00:10.597+08:00  INFO 50998 --- [webdev2] [           main] org.hibernate.orm.core                   : HHH000001: Hibernate ORM core version 7.4.5.Final
+2026-11-18T18:00:10.864+08:00  INFO 50998 --- [webdev2] [           main] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-11-18T18:00:10.886+08:00  INFO 50998 --- [webdev2] [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2026-11-18T18:00:11.152+08:00  INFO 50998 --- [webdev2] [           main] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@51c6e775
+2026-11-18T18:00:11.154+08:00  INFO 50998 --- [webdev2] [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2026-11-18T18:00:11.211+08:00  INFO 50998 --- [webdev2] [           main] org.hibernate.orm.connections.pooling    : HHH10001005: Database info:
+	Database JDBC URL [jdbc:mysql://localhost:3307/webdev2_week8]
+	Database driver: MySQL Connector/J
+	Database dialect: MySQLDialect
+	Database version: 8.4.13
+	Default catalog/schema: webdev2_week8/undefined
+	Autocommit mode: undefined/unknown
+	Isolation level: REPEATABLE_READ [default REPEATABLE_READ]
+	JDBC fetch size: none
+	Pool: DataSourceConnectionProvider
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2026-11-18T18:00:11.977+08:00  INFO 50998 --- [webdev2] [           main] org.hibernate.orm.core                   : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2026-11-18T18:00:12.015+08:00  INFO 50998 --- [webdev2] [           main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-11-18T18:00:12.068+08:00  INFO 50998 --- [webdev2] [           main] o.s.d.j.r.query.QueryEnhancerFactories   : Hibernate is in classpath; If applicable, HQL parser will be used.
+2026-11-18T18:00:12.647+08:00  INFO 50998 --- [webdev2] [           main] r$InitializeUserDetailsManagerConfigurer : Global AuthenticationManager configured with UserDetailsService bean with name clinicUserDetailsService
+2026-11-18T18:00:12.783+08:00  WARN 50998 --- [webdev2] [           main] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2026-11-18T18:00:12.967+08:00  INFO 50998 --- [webdev2] [           main] o.s.b.w.a.WelcomePageHandlerMapping      : Adding welcome page: class path resource [static/index.html]
+2026-11-18T18:00:13.220+08:00  INFO 50998 --- [webdev2] [           main] com.webdev2.Webdev2ApplicationTests      : Started Webdev2ApplicationTests in 3.855 seconds (process running for 4.55)
+2026-11-18T18:00:13.271+08:00 DEBUG 50998 --- [webdev2] [           main] org.hibernate.SQL                        : select count(*) from department d1_0
+Hibernate: select count(*) from department d1_0
+2026-11-18T18:00:13.285+08:00 DEBUG 50998 --- [webdev2] [           main] org.hibernate.SQL                        : select count(*) from owner o1_0
+Hibernate: select count(*) from owner o1_0
+2026-11-18T18:00:13.287+08:00 DEBUG 50998 --- [webdev2] [           main] org.hibernate.SQL                        : select count(*) from veterinarian v1_0
+Hibernate: select count(*) from veterinarian v1_0
+2026-11-18T18:00:13.289+08:00 DEBUG 50998 --- [webdev2] [           main] org.hibernate.SQL                        : select count(*) from pet p1_0
+Hibernate: select count(*) from pet p1_0
+2026-11-18T18:00:13.301+08:00 DEBUG 50998 --- [webdev2] [           main] org.hibernate.SQL                        : select o1_0.id,o1_0.name,o1_0.phone from owner o1_0
+Hibernate: select o1_0.id,o1_0.name,o1_0.phone from owner o1_0
+2026-11-18T18:00:13.325+08:00 DEBUG 50998 --- [webdev2] [           main] org.hibernate.SQL                        : select p1_0.id,p1_0.breed,p1_0.microchip_number,p1_0.name,p1_0.owner_id,p1_0.species from pet p1_0
+Hibernate: select p1_0.id,p1_0.breed,p1_0.microchip_number,p1_0.name,p1_0.owner_id,p1_0.species from pet p1_0
+2026-11-18T18:00:13.333+08:00 DEBUG 50998 --- [webdev2] [           main] org.hibernate.SQL                        : select count(u1_0.id) from app_users u1_0
+Hibernate: select count(u1_0.id) from app_users u1_0
+2026-11-18T18:00:13.667+08:00 DEBUG 50998 --- [webdev2] [           main] org.hibernate.SQL                        : insert into owner (name,phone) values (?,?)
+Hibernate: insert into owner (name,phone) values (?,?)
+2026-11-18T18:00:13.699+08:00 DEBUG 50998 --- [webdev2] [           main] org.hibernate.SQL                        : select p1_0.id from pet p1_0 where p1_0.microchip_number=? limit ?
+Hibernate: select p1_0.id from pet p1_0 where p1_0.microchip_number=? limit ?
+2026-11-18T18:00:13.704+08:00 DEBUG 50998 --- [webdev2] [           main] org.hibernate.SQL                        : select o1_0.id,o1_0.name,o1_0.phone from owner o1_0 where o1_0.id=?
+Hibernate: select o1_0.id,o1_0.name,o1_0.phone from owner o1_0 where o1_0.id=?
+2026-11-18T18:00:13.705+08:00 DEBUG 50998 --- [webdev2] [           main] org.hibernate.SQL                        : insert into pet (breed,microchip_number,name,owner_id,species) values (?,?,?,?,?)
+Hibernate: insert into pet (breed,microchip_number,name,owner_id,species) values (?,?,?,?,?)
+2026-11-18T18:00:13.711+08:00 DEBUG 50998 --- [webdev2] [           main] org.hibernate.SQL                        : select count(*) from owner o1_0 where o1_0.id=?
+Hibernate: select count(*) from owner o1_0 where o1_0.id=?
+2026-11-18T18:00:13.714+08:00 DEBUG 50998 --- [webdev2] [           main] org.hibernate.SQL                        : select p1_0.id from pet p1_0 where p1_0.owner_id=? limit ?
+Hibernate: select p1_0.id from pet p1_0 where p1_0.owner_id=? limit ?
+2026-11-18T18:00:13.717+08:00 DEBUG 50998 --- [webdev2] [           main] org.hibernate.SQL                        : select p1_0.id,p1_0.breed,p1_0.microchip_number,p1_0.name,p1_0.owner_id,p1_0.species from pet p1_0 where p1_0.id=?
+Hibernate: select p1_0.id,p1_0.breed,p1_0.microchip_number,p1_0.name,p1_0.owner_id,p1_0.species from pet p1_0 where p1_0.id=?
+2026-11-18T18:00:13.719+08:00 DEBUG 50998 --- [webdev2] [           main] org.hibernate.SQL                        : select o1_0.id,o1_0.name,o1_0.phone from owner o1_0 where o1_0.id=?
+Hibernate: select o1_0.id,o1_0.name,o1_0.phone from owner o1_0 where o1_0.id=?
+2026-11-18T18:00:13.734+08:00 DEBUG 50998 --- [webdev2] [           main] org.hibernate.SQL                        : select p1_0.id,p1_0.breed,p1_0.microchip_number,p1_0.name,p1_0.owner_id,p1_0.species from pet p1_0 where upper(p1_0.species)=upper(?) order by p1_0.name limit ?
+Hibernate: select p1_0.id,p1_0.breed,p1_0.microchip_number,p1_0.name,p1_0.owner_id,p1_0.species from pet p1_0 where upper(p1_0.species)=upper(?) order by p1_0.name limit ?
+2026-11-18T18:00:13.737+08:00 DEBUG 50998 --- [webdev2] [           main] org.hibernate.SQL                        : select o1_0.id,o1_0.name,o1_0.phone from owner o1_0 where o1_0.id=?
+Hibernate: select o1_0.id,o1_0.name,o1_0.phone from owner o1_0 where o1_0.id=?
+2026-11-18T18:00:13.738+08:00 DEBUG 50998 --- [webdev2] [           main] org.hibernate.SQL                        : select o1_0.id,o1_0.name,o1_0.phone from owner o1_0 where o1_0.id=?
+Hibernate: select o1_0.id,o1_0.name,o1_0.phone from owner o1_0 where o1_0.id=?
+2026-11-18T18:00:13.739+08:00 DEBUG 50998 --- [webdev2] [           main] org.hibernate.SQL                        : select o1_0.id,o1_0.name,o1_0.phone from owner o1_0 where o1_0.id=?
+Hibernate: select o1_0.id,o1_0.name,o1_0.phone from owner o1_0 where o1_0.id=?
+2026-11-18T18:00:13.741+08:00 DEBUG 50998 --- [webdev2] [           main] org.hibernate.SQL                        : select p1_0.id,p1_0.breed,p1_0.microchip_number,p1_0.name,p1_0.owner_id,p1_0.species from pet p1_0 where p1_0.id=?
+Hibernate: select p1_0.id,p1_0.breed,p1_0.microchip_number,p1_0.name,p1_0.owner_id,p1_0.species from pet p1_0 where p1_0.id=?
+2026-11-18T18:00:13.746+08:00 DEBUG 50998 --- [webdev2] [           main] org.hibernate.SQL                        : select p1_0.id from pet p1_0 where p1_0.microchip_number=? and p1_0.id<>? limit ?
+Hibernate: select p1_0.id from pet p1_0 where p1_0.microchip_number=? and p1_0.id<>? limit ?
+2026-11-18T18:00:13.748+08:00 DEBUG 50998 --- [webdev2] [           main] org.hibernate.SQL                        : select o1_0.id,o1_0.name,o1_0.phone from owner o1_0 where o1_0.id=?
+Hibernate: select o1_0.id,o1_0.name,o1_0.phone from owner o1_0 where o1_0.id=?
+2026-11-18T18:00:13.752+08:00 DEBUG 50998 --- [webdev2] [           main] org.hibernate.SQL                        : update pet set breed=?,microchip_number=?,name=?,owner_id=?,species=? where id=?
+Hibernate: update pet set breed=?,microchip_number=?,name=?,owner_id=?,species=? where id=?
+2026-11-18T18:00:13.755+08:00 DEBUG 50998 --- [webdev2] [           main] org.hibernate.SQL                        : select p1_0.id,p1_0.breed,p1_0.microchip_number,p1_0.name,p1_0.owner_id,p1_0.species from pet p1_0 where p1_0.id=?
+Hibernate: select p1_0.id,p1_0.breed,p1_0.microchip_number,p1_0.name,p1_0.owner_id,p1_0.species from pet p1_0 where p1_0.id=?
+2026-11-18T18:00:13.757+08:00 DEBUG 50998 --- [webdev2] [           main] org.hibernate.SQL                        : select o1_0.id,o1_0.name,o1_0.phone from owner o1_0 where o1_0.id=?
+Hibernate: select o1_0.id,o1_0.name,o1_0.phone from owner o1_0 where o1_0.id=?
+2026-11-18T18:00:13.758+08:00 DEBUG 50998 --- [webdev2] [           main] org.hibernate.SQL                        : update pet set breed=?,microchip_number=?,name=?,owner_id=?,species=? where id=?
+Hibernate: update pet set breed=?,microchip_number=?,name=?,owner_id=?,species=? where id=?
+2026-11-18T18:00:13.762+08:00 DEBUG 50998 --- [webdev2] [           main] org.hibernate.SQL                        : select count(*) from pet p1_0 where p1_0.id=?
+Hibernate: select count(*) from pet p1_0 where p1_0.id=?
+2026-11-18T18:00:13.764+08:00 DEBUG 50998 --- [webdev2] [           main] org.hibernate.SQL                        : select a1_0.id from appointment a1_0 where a1_0.pet_id=? limit ?
+Hibernate: select a1_0.id from appointment a1_0 where a1_0.pet_id=? limit ?
+2026-11-18T18:00:13.765+08:00 DEBUG 50998 --- [webdev2] [           main] org.hibernate.SQL                        : select p1_0.id,p1_0.breed,p1_0.microchip_number,p1_0.name,p1_0.owner_id,p1_0.species from pet p1_0 where p1_0.id=?
+Hibernate: select p1_0.id,p1_0.breed,p1_0.microchip_number,p1_0.name,p1_0.owner_id,p1_0.species from pet p1_0 where p1_0.id=?
+2026-11-18T18:00:13.769+08:00 DEBUG 50998 --- [webdev2] [           main] org.hibernate.SQL                        : delete from pet where id=?
+Hibernate: delete from pet where id=?
+2026-11-18T18:00:13.771+08:00 DEBUG 50998 --- [webdev2] [           main] org.hibernate.SQL                        : select p1_0.id,p1_0.breed,p1_0.microchip_number,p1_0.name,p1_0.owner_id,p1_0.species from pet p1_0 where p1_0.id=?
+Hibernate: select p1_0.id,p1_0.breed,p1_0.microchip_number,p1_0.name,p1_0.owner_id,p1_0.species from pet p1_0 where p1_0.id=?
+2026-11-18T18:00:13.774+08:00 DEBUG 50998 --- [webdev2] [           main] org.hibernate.SQL                        : select count(*) from owner o1_0 where o1_0.id=?
+Hibernate: select count(*) from owner o1_0 where o1_0.id=?
+2026-11-18T18:00:13.776+08:00 DEBUG 50998 --- [webdev2] [           main] org.hibernate.SQL                        : select p1_0.id from pet p1_0 where p1_0.owner_id=? limit ?
+Hibernate: select p1_0.id from pet p1_0 where p1_0.owner_id=? limit ?
+2026-11-18T18:00:13.778+08:00 DEBUG 50998 --- [webdev2] [           main] org.hibernate.SQL                        : select o1_0.id,o1_0.name,o1_0.phone from owner o1_0 where o1_0.id=?
+Hibernate: select o1_0.id,o1_0.name,o1_0.phone from owner o1_0 where o1_0.id=?
+2026-11-18T18:00:13.779+08:00 DEBUG 50998 --- [webdev2] [           main] org.hibernate.SQL                        : delete from owner where id=?
+Hibernate: delete from owner where id=?
+2026-11-18T18:00:13.781+08:00 DEBUG 50998 --- [webdev2] [           main] org.hibernate.SQL                        : select o1_0.id,o1_0.name,o1_0.phone from owner o1_0 where o1_0.id=?
+Hibernate: select o1_0.id,o1_0.name,o1_0.phone from owner o1_0 where o1_0.id=?
+2026-11-18T18:00:13.794+08:00 DEBUG 50998 --- [webdev2] [           main] org.hibernate.SQL                        : select v1_0.id,v1_0.available_slots,v1_0.name,v1_0.specialty from veterinarian v1_0
+Hibernate: select v1_0.id,v1_0.available_slots,v1_0.name,v1_0.specialty from veterinarian v1_0
+2026-11-18T18:00:13.797+08:00 DEBUG 50998 --- [webdev2] [           main] org.hibernate.SQL                        : insert into owner (name,phone) values (?,?)
+Hibernate: insert into owner (name,phone) values (?,?)
+2026-11-18T18:00:13.800+08:00 DEBUG 50998 --- [webdev2] [           main] org.hibernate.SQL                        : select p1_0.id from pet p1_0 where p1_0.microchip_number=? limit ?
+Hibernate: select p1_0.id from pet p1_0 where p1_0.microchip_number=? limit ?
+2026-11-18T18:00:13.801+08:00 DEBUG 50998 --- [webdev2] [           main] org.hibernate.SQL                        : select o1_0.id,o1_0.name,o1_0.phone from owner o1_0 where o1_0.id=?
+Hibernate: select o1_0.id,o1_0.name,o1_0.phone from owner o1_0 where o1_0.id=?
+2026-11-18T18:00:13.802+08:00 DEBUG 50998 --- [webdev2] [           main] org.hibernate.SQL                        : insert into pet (breed,microchip_number,name,owner_id,species) values (?,?,?,?,?)
+Hibernate: insert into pet (breed,microchip_number,name,owner_id,species) values (?,?,?,?,?)
+2026-11-18T18:00:13.805+08:00 DEBUG 50998 --- [webdev2] [           main] org.hibernate.SQL                        : select v1_0.id,v1_0.available_slots,v1_0.name,v1_0.specialty from veterinarian v1_0 where v1_0.id=?
+Hibernate: select v1_0.id,v1_0.available_slots,v1_0.name,v1_0.specialty from veterinarian v1_0 where v1_0.id=?
+2026-11-18T18:00:13.815+08:00 DEBUG 50998 --- [webdev2] [           main] org.hibernate.SQL                        : update veterinarian v1_0 set available_slots=(v1_0.available_slots-1) where v1_0.id=? and v1_0.available_slots>0
+Hibernate: update veterinarian v1_0 set available_slots=(v1_0.available_slots-1) where v1_0.id=? and v1_0.available_slots>0
+2026-11-18T18:00:13.816+08:00 DEBUG 50998 --- [webdev2] [           main] org.hibernate.SQL                        : select p1_0.id,p1_0.breed,p1_0.microchip_number,p1_0.name,p1_0.owner_id,p1_0.species from pet p1_0 where p1_0.id=?
+Hibernate: select p1_0.id,p1_0.breed,p1_0.microchip_number,p1_0.name,p1_0.owner_id,p1_0.species from pet p1_0 where p1_0.id=?
+2026-11-18T18:00:13.820+08:00 DEBUG 50998 --- [webdev2] [           main] org.hibernate.SQL                        : select a1_0.id from appointment a1_0 where a1_0.pet_id=? and a1_0.appointment_date=? limit ?
+Hibernate: select a1_0.id from appointment a1_0 where a1_0.pet_id=? and a1_0.appointment_date=? limit ?
+2026-11-18T18:00:13.823+08:00 DEBUG 50998 --- [webdev2] [           main] org.hibernate.SQL                        : insert into appointment (appointment_date,fee,pet_id,reason,vet_id) values (?,?,?,?,?)
+Hibernate: insert into appointment (appointment_date,fee,pet_id,reason,vet_id) values (?,?,?,?,?)
+2026-11-18T18:00:13.824+08:00 DEBUG 50998 --- [webdev2] [           main] org.hibernate.SQL                        : select o1_0.id,o1_0.name,o1_0.phone from owner o1_0 where o1_0.id=?
+Hibernate: select o1_0.id,o1_0.name,o1_0.phone from owner o1_0 where o1_0.id=?
+2026-11-18T18:00:13.828+08:00 DEBUG 50998 --- [webdev2] [           main] org.hibernate.SQL                        : select v1_0.id,v1_0.available_slots,v1_0.name,v1_0.specialty from veterinarian v1_0 where v1_0.id=?
+Hibernate: select v1_0.id,v1_0.available_slots,v1_0.name,v1_0.specialty from veterinarian v1_0 where v1_0.id=?
+2026-11-18T18:00:13.830+08:00 DEBUG 50998 --- [webdev2] [           main] org.hibernate.SQL                        : select v1_0.id,v1_0.available_slots,v1_0.name,v1_0.specialty from veterinarian v1_0 where v1_0.id=?
+Hibernate: select v1_0.id,v1_0.available_slots,v1_0.name,v1_0.specialty from veterinarian v1_0 where v1_0.id=?
+2026-11-18T18:00:13.831+08:00 DEBUG 50998 --- [webdev2] [           main] org.hibernate.SQL                        : update veterinarian v1_0 set available_slots=(v1_0.available_slots-1) where v1_0.id=? and v1_0.available_slots>0
+Hibernate: update veterinarian v1_0 set available_slots=(v1_0.available_slots-1) where v1_0.id=? and v1_0.available_slots>0
+2026-11-18T18:00:13.832+08:00 DEBUG 50998 --- [webdev2] [           main] org.hibernate.SQL                        : select p1_0.id,p1_0.breed,p1_0.microchip_number,p1_0.name,p1_0.owner_id,p1_0.species from pet p1_0 where p1_0.id=?
+Hibernate: select p1_0.id,p1_0.breed,p1_0.microchip_number,p1_0.name,p1_0.owner_id,p1_0.species from pet p1_0 where p1_0.id=?
+2026-11-18T18:00:13.833+08:00 DEBUG 50998 --- [webdev2] [           main] org.hibernate.SQL                        : select a1_0.id from appointment a1_0 where a1_0.pet_id=? and a1_0.appointment_date=? limit ?
+Hibernate: select a1_0.id from appointment a1_0 where a1_0.pet_id=? and a1_0.appointment_date=? limit ?
+2026-11-18T18:00:13.835+08:00 DEBUG 50998 --- [webdev2] [           main] org.hibernate.SQL                        : select v1_0.id,v1_0.available_slots,v1_0.name,v1_0.specialty from veterinarian v1_0 where v1_0.id=?
+Hibernate: select v1_0.id,v1_0.available_slots,v1_0.name,v1_0.specialty from veterinarian v1_0 where v1_0.id=?
+2026-11-18T18:00:13.837+08:00 DEBUG 50998 --- [webdev2] [           main] org.hibernate.SQL                        : select count(*) from pet p1_0 where p1_0.id=?
+Hibernate: select count(*) from pet p1_0 where p1_0.id=?
+2026-11-18T18:00:13.838+08:00 DEBUG 50998 --- [webdev2] [           main] org.hibernate.SQL                        : select a1_0.id from appointment a1_0 where a1_0.pet_id=? limit ?
+Hibernate: select a1_0.id from appointment a1_0 where a1_0.pet_id=? limit ?
+2026-11-18T18:00:13.840+08:00 DEBUG 50998 --- [webdev2] [           main] org.hibernate.SQL                        : select a1_0.id,a1_0.appointment_date,a1_0.fee,a1_0.pet_id,a1_0.reason,a1_0.vet_id from appointment a1_0 where a1_0.id=?
+Hibernate: select a1_0.id,a1_0.appointment_date,a1_0.fee,a1_0.pet_id,a1_0.reason,a1_0.vet_id from appointment a1_0 where a1_0.id=?
+2026-11-18T18:00:13.842+08:00 DEBUG 50998 --- [webdev2] [           main] org.hibernate.SQL                        : delete from appointment where id=?
+Hibernate: delete from appointment where id=?
+2026-11-18T18:00:13.844+08:00 DEBUG 50998 --- [webdev2] [           main] org.hibernate.SQL                        : select v1_0.id,v1_0.available_slots,v1_0.name,v1_0.specialty from veterinarian v1_0 where v1_0.id=?
+Hibernate: select v1_0.id,v1_0.available_slots,v1_0.name,v1_0.specialty from veterinarian v1_0 where v1_0.id=?
+2026-11-18T18:00:13.847+08:00 DEBUG 50998 --- [webdev2] [           main] org.hibernate.SQL                        : select v1_0.id,v1_0.available_slots,v1_0.name,v1_0.specialty from veterinarian v1_0 where v1_0.id=?
+Hibernate: select v1_0.id,v1_0.available_slots,v1_0.name,v1_0.specialty from veterinarian v1_0 where v1_0.id=?
+2026-11-18T18:00:13.848+08:00 DEBUG 50998 --- [webdev2] [           main] org.hibernate.SQL                        : update veterinarian set available_slots=?,name=?,specialty=? where id=?
+Hibernate: update veterinarian set available_slots=?,name=?,specialty=? where id=?
+2026-11-18T18:00:13.850+08:00 DEBUG 50998 --- [webdev2] [           main] org.hibernate.SQL                        : select count(*) from pet p1_0 where p1_0.id=?
+Hibernate: select count(*) from pet p1_0 where p1_0.id=?
+2026-11-18T18:00:13.851+08:00 DEBUG 50998 --- [webdev2] [           main] org.hibernate.SQL                        : select a1_0.id from appointment a1_0 where a1_0.pet_id=? limit ?
+Hibernate: select a1_0.id from appointment a1_0 where a1_0.pet_id=? limit ?
+2026-11-18T18:00:13.852+08:00 DEBUG 50998 --- [webdev2] [           main] org.hibernate.SQL                        : select p1_0.id,p1_0.breed,p1_0.microchip_number,p1_0.name,p1_0.owner_id,p1_0.species from pet p1_0 where p1_0.id=?
+Hibernate: select p1_0.id,p1_0.breed,p1_0.microchip_number,p1_0.name,p1_0.owner_id,p1_0.species from pet p1_0 where p1_0.id=?
+2026-11-18T18:00:13.853+08:00 DEBUG 50998 --- [webdev2] [           main] org.hibernate.SQL                        : delete from pet where id=?
+Hibernate: delete from pet where id=?
+2026-11-18T18:00:13.854+08:00 DEBUG 50998 --- [webdev2] [           main] org.hibernate.SQL                        : select count(*) from owner o1_0 where o1_0.id=?
+Hibernate: select count(*) from owner o1_0 where o1_0.id=?
+2026-11-18T18:00:13.855+08:00 DEBUG 50998 --- [webdev2] [           main] org.hibernate.SQL                        : select p1_0.id from pet p1_0 where p1_0.owner_id=? limit ?
+Hibernate: select p1_0.id from pet p1_0 where p1_0.owner_id=? limit ?
+2026-11-18T18:00:13.856+08:00 DEBUG 50998 --- [webdev2] [           main] org.hibernate.SQL                        : select o1_0.id,o1_0.name,o1_0.phone from owner o1_0 where o1_0.id=?
+Hibernate: select o1_0.id,o1_0.name,o1_0.phone from owner o1_0 where o1_0.id=?
+2026-11-18T18:00:13.857+08:00 DEBUG 50998 --- [webdev2] [           main] org.hibernate.SQL                        : delete from owner where id=?
+Hibernate: delete from owner where id=?
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 4.758 s -- in com.webdev2.Webdev2ApplicationTests
+[INFO] Running com.webdev2.Week15SecurityTests
+2026-11-18T18:00:13.864+08:00  INFO 50998 --- [webdev2] [           main] t.c.s.AnnotationConfigContextLoaderUtils : Could not detect default configuration classes for test class [com.webdev2.Week15SecurityTests]: Week15SecurityTests does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+2026-11-18T18:00:13.865+08:00  INFO 50998 --- [webdev2] [           main] .b.t.c.SpringBootTestContextBootstrapper : Found @SpringBootConfiguration com.webdev2.Webdev2Application for test class com.webdev2.Week15SecurityTests
+2026-11-18T18:00:13.865+08:00  INFO 50998 --- [webdev2] [           main] t.c.s.AnnotationConfigContextLoaderUtils : Could not detect default configuration classes for test class [com.webdev2.Week15SecurityTests]: Week15SecurityTests does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+2026-11-18T18:00:13.866+08:00  INFO 50998 --- [webdev2] [           main] .b.t.c.SpringBootTestContextBootstrapper : Found @SpringBootConfiguration com.webdev2.Webdev2Application for test class com.webdev2.Week15SecurityTests
+2026-11-18T18:00:13.888+08:00  INFO 50998 --- [webdev2] [           main] o.s.b.t.m.w.SpringBootMockServletContext : Initializing Spring TestDispatcherServlet ''
+2026-11-18T18:00:13.888+08:00  INFO 50998 --- [webdev2] [           main] o.s.t.web.servlet.TestDispatcherServlet  : Initializing Servlet ''
+2026-11-18T18:00:13.889+08:00  INFO 50998 --- [webdev2] [           main] o.s.t.web.servlet.TestDispatcherServlet  : Completed initialization in 1 ms
+2026-11-18T18:00:14.024+08:00 DEBUG 50998 --- [webdev2] [           main] org.hibernate.SQL                        : insert into clinic_account (enabled,password_hash,role,username) values (?,?,?,?)
+Hibernate: insert into clinic_account (enabled,password_hash,role,username) values (?,?,?,?)
+2026-11-18T18:00:14.146+08:00 DEBUG 50998 --- [webdev2] [           main] org.hibernate.SQL                        : insert into clinic_account (enabled,password_hash,role,username) values (?,?,?,?)
+Hibernate: insert into clinic_account (enabled,password_hash,role,username) values (?,?,?,?)
+2026-11-18T18:00:14.385+08:00 DEBUG 50998 --- [webdev2] [           main] org.hibernate.SQL                        : select ca1_0.id,ca1_0.enabled,ca1_0.password_hash,ca1_0.role,ca1_0.username from clinic_account ca1_0 where ca1_0.username=?
+Hibernate: select ca1_0.id,ca1_0.enabled,ca1_0.password_hash,ca1_0.role,ca1_0.username from clinic_account ca1_0 where ca1_0.username=?
+2026-11-18T18:00:14.517+08:00 DEBUG 50998 --- [webdev2] [           main] org.hibernate.SQL                        : select ca1_0.id,ca1_0.enabled,ca1_0.password_hash,ca1_0.role,ca1_0.username from clinic_account ca1_0 where ca1_0.username=?
+Hibernate: select ca1_0.id,ca1_0.enabled,ca1_0.password_hash,ca1_0.role,ca1_0.username from clinic_account ca1_0 where ca1_0.username=?
+2026-11-18T18:00:14.646+08:00 DEBUG 50998 --- [webdev2] [           main] org.hibernate.SQL                        : select p1_0.id,p1_0.breed,p1_0.microchip_number,p1_0.name,p1_0.owner_id,p1_0.species from pet p1_0 order by p1_0.id limit ?,?
+Hibernate: select p1_0.id,p1_0.breed,p1_0.microchip_number,p1_0.name,p1_0.owner_id,p1_0.species from pet p1_0 order by p1_0.id limit ?,?
+2026-11-18T18:00:14.649+08:00 DEBUG 50998 --- [webdev2] [           main] org.hibernate.SQL                        : select o1_0.id,o1_0.name,o1_0.phone from owner o1_0 where o1_0.id=?
+Hibernate: select o1_0.id,o1_0.name,o1_0.phone from owner o1_0 where o1_0.id=?
+2026-11-18T18:00:14.649+08:00 DEBUG 50998 --- [webdev2] [           main] org.hibernate.SQL                        : select o1_0.id,o1_0.name,o1_0.phone from owner o1_0 where o1_0.id=?
+Hibernate: select o1_0.id,o1_0.name,o1_0.phone from owner o1_0 where o1_0.id=?
+2026-11-18T18:00:14.650+08:00 DEBUG 50998 --- [webdev2] [           main] org.hibernate.SQL                        : select o1_0.id,o1_0.name,o1_0.phone from owner o1_0 where o1_0.id=?
+Hibernate: select o1_0.id,o1_0.name,o1_0.phone from owner o1_0 where o1_0.id=?
+2026-11-18T18:00:14.654+08:00  WARN 50998 --- [webdev2] [           main] ration$PageModule$WarningLoggingModifier : Serializing PageImpl instances as-is is not supported, meaning that there is no guarantee about the stability of the resulting JSON structure!
+	For a stable JSON structure, please use Spring Data's PagedModel (globally via @EnableSpringDataWebSupport(pageSerializationMode = VIA_DTO))
+	or Spring HATEOAS and Spring Data's PagedResourcesAssembler as documented in https://docs.spring.io/spring-data/commons/reference/repositories/core-extensions.html#core.web.pageables.
+
+2026-11-18T18:00:14.665+08:00 DEBUG 50998 --- [webdev2] [           main] org.hibernate.SQL                        : select count(*) from pet p1_0
+Hibernate: select count(*) from pet p1_0
+2026-11-18T18:00:14.668+08:00 DEBUG 50998 --- [webdev2] [           main] org.hibernate.SQL                        : select count(*) from pet p1_0
+Hibernate: select count(*) from pet p1_0
+2026-11-18T18:00:14.671+08:00 DEBUG 50998 --- [webdev2] [           main] org.hibernate.SQL                        : select ca1_0.id,ca1_0.enabled,ca1_0.password_hash,ca1_0.role,ca1_0.username from clinic_account ca1_0 where ca1_0.username=?
+Hibernate: select ca1_0.id,ca1_0.enabled,ca1_0.password_hash,ca1_0.role,ca1_0.username from clinic_account ca1_0 where ca1_0.username=?
+2026-11-18T18:00:14.801+08:00 DEBUG 50998 --- [webdev2] [           main] org.hibernate.SQL                        : select p1_0.id from pet p1_0 where p1_0.microchip_number=? limit ?
+Hibernate: select p1_0.id from pet p1_0 where p1_0.microchip_number=? limit ?
+2026-11-18T18:00:14.802+08:00 DEBUG 50998 --- [webdev2] [           main] org.hibernate.SQL                        : insert into pet (breed,microchip_number,name,owner_id,species) values (?,?,?,?,?)
+Hibernate: insert into pet (breed,microchip_number,name,owner_id,species) values (?,?,?,?,?)
+2026-11-18T18:00:14.809+08:00 DEBUG 50998 --- [webdev2] [           main] org.hibernate.SQL                        : select count(*) from pet p1_0 where p1_0.id=?
+Hibernate: select count(*) from pet p1_0 where p1_0.id=?
+2026-11-18T18:00:14.810+08:00 DEBUG 50998 --- [webdev2] [           main] org.hibernate.SQL                        : select a1_0.id from appointment a1_0 where a1_0.pet_id=? limit ?
+Hibernate: select a1_0.id from appointment a1_0 where a1_0.pet_id=? limit ?
+2026-11-18T18:00:14.811+08:00 DEBUG 50998 --- [webdev2] [           main] org.hibernate.SQL                        : select p1_0.id,p1_0.breed,p1_0.microchip_number,p1_0.name,p1_0.owner_id,p1_0.species from pet p1_0 where p1_0.id=?
+Hibernate: select p1_0.id,p1_0.breed,p1_0.microchip_number,p1_0.name,p1_0.owner_id,p1_0.species from pet p1_0 where p1_0.id=?
+2026-11-18T18:00:14.812+08:00 DEBUG 50998 --- [webdev2] [           main] org.hibernate.SQL                        : delete from pet where id=?
+Hibernate: delete from pet where id=?
+2026-11-18T18:00:14.816+08:00 DEBUG 50998 --- [webdev2] [           main] org.hibernate.SQL                        : select ca1_0.id,ca1_0.enabled,ca1_0.password_hash,ca1_0.role,ca1_0.username from clinic_account ca1_0 where ca1_0.id=?
+Hibernate: select ca1_0.id,ca1_0.enabled,ca1_0.password_hash,ca1_0.role,ca1_0.username from clinic_account ca1_0 where ca1_0.id=?
+2026-11-18T18:00:14.817+08:00 DEBUG 50998 --- [webdev2] [           main] org.hibernate.SQL                        : delete from clinic_account where id=?
+Hibernate: delete from clinic_account where id=?
+2026-11-18T18:00:14.818+08:00 DEBUG 50998 --- [webdev2] [           main] org.hibernate.SQL                        : select ca1_0.id,ca1_0.enabled,ca1_0.password_hash,ca1_0.role,ca1_0.username from clinic_account ca1_0 where ca1_0.id=?
+Hibernate: select ca1_0.id,ca1_0.enabled,ca1_0.password_hash,ca1_0.role,ca1_0.username from clinic_account ca1_0 where ca1_0.id=?
+2026-11-18T18:00:14.819+08:00 DEBUG 50998 --- [webdev2] [           main] org.hibernate.SQL                        : delete from clinic_account where id=?
+Hibernate: delete from clinic_account where id=?
+[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.959 s -- in com.webdev2.Week15SecurityTests
+[INFO] 
+[INFO] Results:
+[INFO] 
+[INFO] Tests run: 3, Failures: 0, Errors: 0, Skipped: 0
+[INFO] 
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD SUCCESS
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time:  7.199 s
+[INFO] Finished at: 2026-11-18T18:00:14+08:00
+[INFO] ------------------------------------------------------------------------
