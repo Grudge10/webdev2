@@ -15,7 +15,7 @@ public class Owner {
 
     private String phone;
 
-    @OneToMany(mappedBy = "owner", cascade = {CascadeType.PERSIST, CascadeType.MERGE}, orphanRemoval = true)
+    @OneToMany(mappedBy = "owner", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     private List<Pet> pets = new ArrayList<>();
 
     public Owner() {

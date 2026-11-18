@@ -24,6 +24,8 @@ public class UpdatePetRequest {
     @Email(message = "Invalid email format")
     private String ownerEmail;
 
+    private Long ownerId;
+
     public UpdatePetRequest() {
     }
 
@@ -32,6 +34,11 @@ public class UpdatePetRequest {
         this.name = name;
         this.species = species;
         this.breed = breed;
+    }
+
+    public UpdatePetRequest(String microchipNumber, String name, String species, String breed, Long ownerId) {
+        this(microchipNumber, name, species, breed);
+        this.ownerId = ownerId;
     }
 
     public String getMicrochipNumber() {
@@ -80,5 +87,13 @@ public class UpdatePetRequest {
 
     public void setOwnerEmail(String ownerEmail) {
         this.ownerEmail = ownerEmail;
+    }
+
+    public Long getOwnerId() {
+        return ownerId;
+    }
+
+    public void setOwnerId(Long ownerId) {
+        this.ownerId = ownerId;
     }
 }

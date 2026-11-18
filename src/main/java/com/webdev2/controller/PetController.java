@@ -1,13 +1,11 @@
 package com.webdev2.controller;
 
 import com.webdev2.dto.CreatePetRequest;
-import com.webdev2.dto.ErrorResponse;
 import com.webdev2.dto.PetDTO;
 import com.webdev2.dto.UpdatePetRequest;
 import com.webdev2.service.PetService;
 import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -40,16 +38,7 @@ public class PetController {
     }
 
     @PostMapping
-    public ResponseEntity<?> create(@Valid @RequestBody CreatePetRequest request) {
-        if (petService.existsByMicrochipNumber(request.getMicrochipNumber())) {
-            ErrorResponse conflict = new ErrorResponse(
-                    409,
-                    "Microchip number already exists: " + request.getMicrochipNumber(),
-                    System.currentTimeMillis(),
-                    null
-            );
-            return ResponseEntity.status(HttpStatus.CONFLICT).body(conflict);
-        }
+    public ResponseEntity<PetDTO> create(@Valid @RequestBody CreatePetRequest request) {
         PetDTO created = petService.create(request);
         URI location = ServletUriComponentsBuilder.fromCurrentRequest()
                 .path("/{id}")

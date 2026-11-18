@@ -10,6 +10,10 @@ import java.util.List;
 public interface PetRepository extends JpaRepository<Pet, Long> {
     boolean existsByMicrochipNumber(String microchipNumber);
 
+    boolean existsByMicrochipNumberAndIdNot(String microchipNumber, Long id);
+
+    boolean existsByOwnerId(Long ownerId);
+
     Page<Pet> findBySpeciesIgnoreCase(String species, Pageable pageable);
 
     List<Pet> findBySpeciesIgnoreCase(String species);

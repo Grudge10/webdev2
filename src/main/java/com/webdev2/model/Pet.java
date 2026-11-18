@@ -13,8 +13,10 @@ public class Pet {
     @Column(unique = true, nullable = false)
     private String microchipNumber;
 
+    @Column(nullable = false)
     private String name;
 
+    @Column(nullable = false)
     private String species;
 
     private String breed;
@@ -23,7 +25,7 @@ public class Pet {
     @JoinColumn(name = "owner_id")
     private Owner owner;
 
-    @OneToMany(mappedBy = "pet", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "pet")
     private List<Appointment> appointments = new ArrayList<>();
 
     public Pet() {

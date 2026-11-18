@@ -15,6 +15,9 @@ public class Veterinarian {
 
     private String specialty;
 
+    @Column(nullable = false)
+    private int availableSlots = 3;
+
     @OneToMany(mappedBy = "veterinarian", fetch = FetchType.LAZY)
     private List<Appointment> appointments = new ArrayList<>();
 
@@ -22,8 +25,13 @@ public class Veterinarian {
     }
 
     public Veterinarian(String name, String specialty) {
+        this(name, specialty, 3);
+    }
+
+    public Veterinarian(String name, String specialty, int availableSlots) {
         this.name = name;
         this.specialty = specialty;
+        this.availableSlots = availableSlots;
     }
 
     public Long getId() {
@@ -48,6 +56,14 @@ public class Veterinarian {
 
     public void setSpecialty(String specialty) {
         this.specialty = specialty;
+    }
+
+    public int getAvailableSlots() {
+        return availableSlots;
+    }
+
+    public void setAvailableSlots(int availableSlots) {
+        this.availableSlots = availableSlots;
     }
 
     public List<Appointment> getAppointments() {

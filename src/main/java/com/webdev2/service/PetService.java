@@ -3,8 +3,12 @@ package com.webdev2.service;
 import com.webdev2.dto.CreatePetRequest;
 import com.webdev2.dto.PetDTO;
 import com.webdev2.dto.UpdatePetRequest;
+import com.webdev2.exception.ConflictException;
 import com.webdev2.exception.ResourceNotFoundException;
+import com.webdev2.model.Owner;
 import com.webdev2.model.Pet;
+import com.webdev2.repository.AppointmentRepository;
+import com.webdev2.repository.OwnerRepository;
 import com.webdev2.repository.PetRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -17,9 +21,13 @@ import java.util.Optional;
 @Service
 public class PetService {
     private final PetRepository petRepository;
+    private final OwnerRepository ownerRepository;
+    private final AppointmentRepository appointmentRepository;
 
-    public PetService(PetRepository petRepository) {
+    public PetService(PetRepository petRepository, OwnerRepository ownerRepository, AppointmentRepository appointmentRepository) {
         this.petRepository = petRepository;
+        this.ownerRepository = ownerRepository;
+        this.appointmentRepository = appointmentRepository;
     }
 
     public PetDTO toDTO(Pet pet) {
@@ -68,49 +76,101 @@ public class PetService {
         return petRepository.existsByMicrochipNumber(microchipNumber);
     }
 
+    @Transactional
     public PetDTO create(CreatePetRequest request) {
+        String microchip = request.getMicrochipNumber().trim();
+        if (petRepository.existsByMicrochipNumber(microchip)) {
+            throw new ConflictException("Microchip number already exists: " + microchip);
+        }
         Pet pet = new Pet(
-                request.getMicrochipNumber(),
-                request.getName(),
-                request.getSpecies(),
-                request.getBreed()
+                microchip,
+                request.getName().trim(),
+                request.getSpecies().trim(),
+                cleanOptional(request.getBreed())
         );
+        pet.setOwner(resolveOwner(request.getOwnerId()));
         Pet saved = petRepository.save(pet);
         return toDTO(saved);
     }
 
+    @Transactional
     public PetDTO update(Long id, UpdatePetRequest request) {
         Pet existing = petRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Pet not found with id: " + id));
-        existing.setMicrochipNumber(request.getMicrochipNumber());
-        existing.setName(request.getName());
-        existing.setSpecies(request.getSpecies());
-        existing.setBreed(request.getBreed());
+        if (isBlank(request.getMicrochipNumber()) || isBlank(request.getName()) || isBlank(request.getSpecies())) {
+            throw new IllegalArgumentException("Microchip number, name, and species are required for PUT");
+        }
+        String microchip = request.getMicrochipNumber().trim();
+        if (petRepository.existsByMicrochipNumberAndIdNot(microchip, id)) {
+            throw new ConflictException("Microchip number already exists: " + microchip);
+        }
+        existing.setMicrochipNumber(microchip);
+        existing.setName(request.getName().trim());
+        existing.setSpecies(request.getSpecies().trim());
+        existing.setBreed(cleanOptional(request.getBreed()));
+        existing.setOwner(resolveOwner(request.getOwnerId()));
         return toDTO(petRepository.save(existing));
     }
 
+    @Transactional
     public PetDTO patch(Long id, UpdatePetRequest request) {
         Pet existing = petRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Pet not found with id: " + id));
         if (request.getMicrochipNumber() != null) {
-            existing.setMicrochipNumber(request.getMicrochipNumber());
+            if (request.getMicrochipNumber().isBlank()) {
+                throw new IllegalArgumentException("Microchip number cannot be blank");
+            }
+            String microchip = request.getMicrochipNumber().trim();
+            if (petRepository.existsByMicrochipNumberAndIdNot(microchip, id)) {
+                throw new ConflictException("Microchip number already exists: " + microchip);
+            }
+            existing.setMicrochipNumber(microchip);
         }
         if (request.getName() != null) {
-            existing.setName(request.getName());
+            if (request.getName().isBlank()) {
+                throw new IllegalArgumentException("Name cannot be blank");
+            }
+            existing.setName(request.getName().trim());
         }
         if (request.getSpecies() != null) {
-            existing.setSpecies(request.getSpecies());
+            if (request.getSpecies().isBlank()) {
+                throw new IllegalArgumentException("Species cannot be blank");
+            }
+            existing.setSpecies(request.getSpecies().trim());
         }
         if (request.getBreed() != null) {
-            existing.setBreed(request.getBreed());
+            existing.setBreed(cleanOptional(request.getBreed()));
+        }
+        if (request.getOwnerId() != null) {
+            existing.setOwner(resolveOwner(request.getOwnerId()));
         }
         return toDTO(petRepository.save(existing));
     }
 
+    @Transactional
     public void delete(Long id) {
         if (!petRepository.existsById(id)) {
             throw new ResourceNotFoundException("Pet not found with id: " + id);
         }
+        if (appointmentRepository.existsByPetId(id)) {
+            throw new ConflictException("Cannot delete pet because it has existing appointments");
+        }
         petRepository.deleteById(id);
+    }
+
+    private Owner resolveOwner(Long ownerId) {
+        if (ownerId == null) {
+            return null;
+        }
+        return ownerRepository.findById(ownerId)
+                .orElseThrow(() -> new ResourceNotFoundException("Owner not found with id: " + ownerId));
+    }
+
+    private boolean isBlank(String value) {
+        return value == null || value.isBlank();
+    }
+
+    private String cleanOptional(String value) {
+        return (value == null || value.isBlank()) ? null : value.trim();
     }
 }
