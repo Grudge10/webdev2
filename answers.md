@@ -1,25 +1,25 @@
-# WEBDEV2 Week 13 Answers (F1)
+# WEBDEV2 Week 14 Answers (F2)
 
 **Name:** Jan Liam E. Arias  
 **Student ID:** 2510499  
 **GitHub Repository URL:** https://github.com/Grudge10/webdev2  
-**Branch:** `week13`  
-**Date Submitted:** 2026-11-16
+**Branch:** `week14`  
+**Date Submitted:** 2026-11-18
 
-## Week 13 Documents
+## Week 14 Documents
 
-- [Lecture Notes and Architecture](docs/week13/lecture.md)
-- [Checkpoint Report](docs/week13/checkpoint.md)
+- [Lecture Notes and Transaction Reasoning](docs/week14/lecture.md)
+- [Checkpoint Report](docs/week14/checkpoint.md)
 - [Updated API Documentation](API.md)
-- [Example Database Config](src/main/resources/application-example.properties)
+- [Updated Postman Collection](api_tests.json)
 - [Vanilla Frontend](src/main/resources/static/index.html)
 
 ## Evidence
 
-- [API Responses](docs/week13/evidence/api_output.txt)
-- [CORS Headers](docs/week13/evidence/cors_output.txt)
-- [MySQL Output](docs/week13/evidence/mysql_output.txt)
+- [API & MySQL Rollback Verification](docs/week14/evidence/api_verification.txt)
+- [Maven Test Output](docs/week14/evidence/maven_test_output.txt)
+- [INFOMAN1 Week 14 Evidence](https://github.com/Grudge10/infoman1/tree/main/week14)
 
 ## Summary
 
-`week13` follows `week11` using branch `week13` and MySQL `webdev2_week8`. I have included dummy env config, `@Transactional(readOnly = true)`, owner fields to `PetDTO`, `/api/owners` GET endpoint, and owners seeded for pets without owners. I have added origins to `WebConfig` and a basic HTML, CSS, JS GET page which uses `getJson()` and `textContent`.
+`week14` builds on `week13` with persisted CRUD for Pets and Owners, relationship selection populated from the API, deliberate `409` delete protection, `request()` handling for `204` and structured validation errors, and an atomic `POST /api/appointments/book` workflow backed by MySQL rollback verification.

@@ -361,6 +361,122 @@
           ]
         }
       }
+    },
+    {
+      "name": "12. POST Create Owner (Happy Path)",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Status code is 201\", function () {",
+              "    pm.response.to.have.status(201);",
+              "});"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"name\": \"Ana Navarro\",\n  \"phone\": \"09175556666\"\n}"
+        },
+        "url": {
+          "raw": "http://localhost:8080/api/owners",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "8080",
+          "path": ["api", "owners"]
+        }
+      }
+    },
+    {
+      "name": "13. DELETE Owner In Use (409 Conflict)",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Status code is 409\", function () {",
+              "    pm.response.to.have.status(409);",
+              "});"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "DELETE",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:8080/api/owners/1",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "8080",
+          "path": ["api", "owners", "1"]
+        }
+      }
+    },
+    {
+      "name": "14. GET Veterinarians (Available Slots)",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Status code is 200\", function () {",
+              "    pm.response.to.have.status(200);",
+              "});"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:8080/api/veterinarians",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "8080",
+          "path": ["api", "veterinarians"]
+        }
+      }
+    },
+    {
+      "name": "15. POST Book Appointment Duplicate Date (409 Rollback)",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Status code is 409\", function () {",
+              "    pm.response.to.have.status(409);",
+              "});"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"petId\": 1,\n  \"vetId\": 2,\n  \"appointmentDate\": \"2026-11-18\",\n  \"reason\": \"Duplicate Test\",\n  \"fee\": 500.00\n}"
+        },
+        "url": {
+          "raw": "http://localhost:8080/api/appointments/book",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "8080",
+          "path": ["api", "appointments", "book"]
+        }
+      }
     }
   ]
 }
