@@ -30,6 +30,14 @@ class Week16ApiSecurityTests {
     }
 
     @Test
+    void healthEndpointReportsDatabaseConnectivityWithoutSecrets() throws Exception {
+        mockMvc().perform(get("/api/health"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.status").value("UP"))
+                .andExpect(jsonPath("$.database").value("UP"));
+    }
+
+    @Test
     void rejectsAnonymousProtectedReadWithUnauthorized() throws Exception {
         mockMvc().perform(get("/api/pets"))
                 .andExpect(status().isUnauthorized())
