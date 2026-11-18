@@ -5,6 +5,24 @@ let totalPages = 1;
 let currentSpecies = "";
 let editingPetId = null;
 let editingOwnerId = null;
+let csrfState = null;
+let currentUser = null;
+
+const loginPanel = document.querySelector("#login-panel");
+const userPanel = document.querySelector("#user-panel");
+const loginForm = document.querySelector("#login-form");
+const loginUsernameInput = document.querySelector("#login-username");
+const loginPasswordInput = document.querySelector("#login-password");
+const loginBtn = document.querySelector("#login-btn");
+const logoutBtn = document.querySelector("#logout-btn");
+const currentUserInfo = document.querySelector("#current-user-info");
+const authStatus = document.querySelector("#auth-status");
+const clinicWorkspace = document.querySelector("#clinic-workspace");
+
+const petFormCard = document.querySelector("#pet-form-card");
+const ownerFormWrap = document.querySelector("#owner-form-wrap");
+const ownerActionsCol = document.querySelector("#owner-actions-col");
+const bookingFormWrap = document.querySelector("#booking-form-wrap");
 
 const petForm = document.querySelector("#pet-form");
 const petFormTitle = document.querySelector("#pet-form-title");
@@ -47,8 +65,50 @@ const bookingSaveBtn = document.querySelector("#booking-save-btn");
 const bookingStatus = document.querySelector("#booking-status");
 const appointmentsBody = document.querySelector("#appointments-body");
 
+function isManager() {
+    return currentUser !== null && currentUser.role === "MANAGER";
+}
+
+function setStatus(element, text, type = "") {
+    element.className = type ? `status ${type}` : "status";
+    element.textContent = text;
+}
+
+async function loadCsrfToken() {
+    const response = await fetch(`${API_BASE}/api/auth/csrf`, {
+        credentials: API_BASE ? "include" : "same-origin"
+    });
+    if (!response.ok) {
+        throw new Error(`Failed to fetch CSRF token (${response.status})`);
+    }
+    csrfState = await response.json();
+}
+
+async function refreshCsrfQuietly() {
+    try {
+        await loadCsrfToken();
+    } catch (error) {
+    }
+}
+
 async function request(path, options = {}) {
-    const response = await fetch(`${API_BASE}${path}`, options);
+    const method = (options.method || "GET").toUpperCase();
+    const headers = { ...(options.headers || {}) };
+
+    if (["POST", "PUT", "PATCH", "DELETE"].includes(method)) {
+        if (!csrfState) {
+            await loadCsrfToken();
+        }
+        headers[csrfState.headerName] = csrfState.token;
+    }
+
+    const response = await fetch(`${API_BASE}${path}`, {
+        ...options,
+        method,
+        headers,
+        credentials: API_BASE ? "include" : "same-origin"
+    });
+
     const type = response.headers.get("content-type") || "";
     let body = null;
     if (response.status !== 204) {
@@ -60,6 +120,10 @@ async function request(path, options = {}) {
     }
 
     if (!response.ok) {
+        if (response.status === 401 && path !== "/api/auth/login" && path !== "/api/auth/me") {
+            applySignedOut("Your session expired or you are signed out. Please sign in again.", "error");
+            await refreshCsrfQuietly();
+        }
         let message = `Request failed (${response.status})`;
         if (typeof body === "object" && body !== null) {
             if (Array.isArray(body.errors) && body.errors.length > 0) {
@@ -76,9 +140,30 @@ async function request(path, options = {}) {
     return body;
 }
 
-function setStatus(element, text, type = "") {
-    element.className = type ? `status ${type}` : "status";
-    element.textContent = text;
+function applySignedOut(message = "Sign in to view or manage clinic records.", statusType = "") {
+    currentUser = null;
+    loginPanel.hidden = false;
+    userPanel.hidden = true;
+    clinicWorkspace.hidden = true;
+    petsBody.replaceChildren();
+    petDetail.replaceChildren();
+    ownersBody.replaceChildren();
+    appointmentsBody.replaceChildren();
+    setStatus(authStatus, message, statusType);
+}
+
+function applySignedIn(user) {
+    currentUser = user;
+    const manager = isManager();
+    loginPanel.hidden = true;
+    userPanel.hidden = false;
+    clinicWorkspace.hidden = false;
+    currentUserInfo.textContent = `Signed in as ${user.username} (${user.role})`;
+    petFormCard.hidden = !manager;
+    ownerFormWrap.hidden = !manager;
+    ownerActionsCol.hidden = !manager;
+    bookingFormWrap.hidden = !manager;
+    setStatus(authStatus, "");
 }
 
 function resetPetForm() {
@@ -164,18 +249,21 @@ async function loadPets() {
                 petIdInput.value = pet.id;
                 loadPetDetail(pet.id);
             });
+            actionTd.append(viewBtn);
 
-            const editBtn = document.createElement("button");
-            editBtn.type = "button";
-            editBtn.textContent = "Edit";
-            editBtn.addEventListener("click", () => startEditPet(pet));
+            if (isManager()) {
+                const editBtn = document.createElement("button");
+                editBtn.type = "button";
+                editBtn.textContent = "Edit";
+                editBtn.addEventListener("click", () => startEditPet(pet));
 
-            const deleteBtn = document.createElement("button");
-            deleteBtn.type = "button";
-            deleteBtn.textContent = "Delete";
-            deleteBtn.addEventListener("click", () => deletePet(pet, rows.length));
+                const deleteBtn = document.createElement("button");
+                deleteBtn.type = "button";
+                deleteBtn.textContent = "Delete";
+                deleteBtn.addEventListener("click", () => deletePet(pet, rows.length));
+                actionTd.append(editBtn, deleteBtn);
+            }
 
-            actionTd.append(viewBtn, editBtn, deleteBtn);
             tr.append(actionTd);
             petsBody.append(tr);
         }
@@ -262,20 +350,22 @@ async function loadOwners() {
                 td.textContent = val;
                 tr.append(td);
             }
-            const actionTd = document.createElement("td");
+            if (isManager()) {
+                const actionTd = document.createElement("td");
 
-            const editBtn = document.createElement("button");
-            editBtn.type = "button";
-            editBtn.textContent = "Edit";
-            editBtn.addEventListener("click", () => startEditOwner(owner));
+                const editBtn = document.createElement("button");
+                editBtn.type = "button";
+                editBtn.textContent = "Edit";
+                editBtn.addEventListener("click", () => startEditOwner(owner));
 
-            const deleteBtn = document.createElement("button");
-            deleteBtn.type = "button";
-            deleteBtn.textContent = "Delete";
-            deleteBtn.addEventListener("click", () => deleteOwner(owner));
+                const deleteBtn = document.createElement("button");
+                deleteBtn.type = "button";
+                deleteBtn.textContent = "Delete";
+                deleteBtn.addEventListener("click", () => deleteOwner(owner));
 
-            actionTd.append(editBtn, deleteBtn);
-            tr.append(actionTd);
+                actionTd.append(editBtn, deleteBtn);
+                tr.append(actionTd);
+            }
             ownersBody.append(tr);
         }
 
@@ -366,6 +456,57 @@ async function loadAppointments() {
         setStatus(bookingStatus, error.message, "error");
     }
 }
+
+async function loadClinicData() {
+    await loadPets();
+    await loadOwners();
+    await loadAppointments();
+    if (isManager()) {
+        await loadPetOptions();
+        await loadVets();
+    }
+}
+
+loginForm.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const username = loginUsernameInput.value.trim();
+    const password = loginPasswordInput.value;
+    if (!username || !password) {
+        setStatus(authStatus, "Username and password are required.", "error");
+        return;
+    }
+
+    loginBtn.disabled = true;
+    setStatus(authStatus, "Signing in...");
+
+    try {
+        const user = await request("/api/auth/login", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ username, password })
+        });
+        await loadCsrfToken();
+        loginPasswordInput.value = "";
+        applySignedIn(user);
+        await loadClinicData();
+    } catch (error) {
+        setStatus(authStatus, error.message, "error");
+    } finally {
+        loginBtn.disabled = false;
+    }
+});
+
+logoutBtn.addEventListener("click", async () => {
+    logoutBtn.disabled = true;
+    try {
+        await request("/api/auth/logout", { method: "POST" });
+    } catch (error) {
+    } finally {
+        logoutBtn.disabled = false;
+    }
+    applySignedOut("Signed out.", "");
+    await refreshCsrfQuietly();
+});
 
 petForm.addEventListener("submit", async (e) => {
     e.preventDefault();
@@ -531,11 +672,14 @@ document.querySelector("#lookup-form").addEventListener("submit", (e) => {
 });
 
 async function init() {
-    await loadPets();
-    await loadOwners();
-    await loadPetOptions();
-    await loadVets();
-    await loadAppointments();
+    try {
+        await loadCsrfToken();
+        const user = await request("/api/auth/me");
+        applySignedIn(user);
+        await loadClinicData();
+    } catch (error) {
+        applySignedOut();
+    }
 }
 
 init();
